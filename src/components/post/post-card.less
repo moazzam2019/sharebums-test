@@ -1,0 +1,212 @@
+@import '../../../style/vars.less';
+
+.feed-card-custom{
+  padding-top:24px ;
+  .feed-text{
+    h3 {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 23px;
+      text-transform: capitalize;
+      word-break: break-word;
+    }
+    svg{
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .feed-content{
+    position: relative;
+
+    .feed-slider {
+      .ant-carousel {
+        .slick-prev {
+          left: 70px;
+        }
+        .slick-next {
+          right: 70px;
+        }
+      }
+    }
+
+    .feed-bottom{
+      position: absolute;
+      top: calc(50% - 53px);
+      right: 20px;
+
+      .action-item{
+        display: flex;
+        flex-direction: column;
+        .action-ico{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom:5px ;
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 15px;
+          cursor: pointer;
+          color: white;
+        }
+        .active{
+          color: #FF5864;
+        }
+      }
+    }
+  }
+
+  .lock-content {
+    position: relative;
+    height: 589px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 3px;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+
+    .feed-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(/static/leaf.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .count-media {
+      position: absolute;
+      bottom: 2px;
+      padding: 2px 5px;
+      text-align: center;
+      border-radius: 5px;
+      // background: rgba(121, 121, 121, .4);
+
+      .count-media-item {
+        color: white;
+        font-size: 12px;
+        padding: 0;
+
+        .media-item {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    .lock-middle {
+      position: relative;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .anticon {
+        font-size: 14px;
+        color: #161616;
+      }
+
+      .ant-btn {
+        &.secondary {
+          border-radius: 8px;
+          font-size: 14px;
+          padding: 13px 21px;
+          width: auto;
+          background: white;
+          color: #161616;
+        }
+
+        &.ant-btn-link {
+          font-size: 12px;
+          color: @white;
+
+          .anticon {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    p {
+      position: relative;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 600;
+      color: @white;
+      padding: 5px 15px;
+      border: 1px solid;
+      border-radius: 25px;
+      font-weight: 600;
+      background-color: @secondary-color;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    @media screen and (max-width: @mobile-screen) {
+      height: 215px;
+    }
+  }
+
+  .vid-split{
+    background: white;
+    .o-w-ner{
+      align-items: center;
+      .ant-avatar{
+        width: 65px;
+        height: 65px;
+        border: none;
+      }
+      .owner-name{
+        .name{
+          color: @black;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 20px;
+        }
+        small{
+          color: #65676B;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+
+  .ant-tabs-nav-wrap{
+    .ant-tabs-tab{
+      color: @black;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 23pxs;
+      .ant-tabs-tab-btn{
+        color: @black;
+      }
+    }
+
+    .ant-tabs-ink-bar{
+      background: @black;
+    }
+  }
+
+  .related-feed{
+    margin-top: 80px;
+    h4 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 23px;
+      color: @black;
+    }
+  }
+
+  
+}
