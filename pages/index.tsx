@@ -1,21 +1,19 @@
 /* eslint-disable camelcase */
-import {
-  Form, Input, Button, Row, Col, Layout, message
-} from 'antd';
-import { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import Head from 'next/head';
-import { login, loginSuccess, loginSocial } from '@redux/auth/actions';
-import { updateCurrentUser } from '@redux/user/actions';
-import { authService, userService } from '@services/index';
-import Link from 'next/link';
-import { ISettings, IUIConfig } from 'src/interfaces';
-import Router from 'next/router';
-import { TwitterOutlined } from '@ant-design/icons';
-import Loader from '@components/common/base/loader';
-import './auth/index.less';
-import GoogleLoginButton from '@components/auth/google-login-button';
-import { LogoLoginIcon } from 'src/icons';
+import { Form, Input, Button, Row, Col, Layout, message } from "antd";
+import { PureComponent } from "react";
+import { connect } from "react-redux";
+import Head from "next/head";
+import { login, loginSuccess, loginSocial } from "@redux/auth/actions";
+import { updateCurrentUser } from "@redux/user/actions";
+import { authService, userService } from "@services/index";
+import Link from "next/link";
+import { ISettings, IUIConfig } from "src/interfaces";
+import Router from "next/router";
+import { TwitterOutlined } from "@ant-design/icons";
+import Loader from "@components/common/base/loader";
+import "./auth/index.less";
+import GoogleLoginButton from "@components/auth/google-login-button";
+import { LogoLoginIcon } from "src/icons";
 
 interface IProps {
   loginAuth: any;
@@ -31,19 +29,19 @@ interface IProps {
 class Login extends PureComponent<IProps> {
   static authenticate = false;
 
-  static layout = 'blank';
+  static layout = "blank";
 
   recaptchaSuccess = false;
 
   static async getInitialProps({ ctx }) {
     return {
-      ...ctx.query
+      ...ctx.query,
     };
   }
 
   state = {
-    loginAs: 'user',
-    isLoading: true
+    loginAs: "user",
+    isLoading: true,
   };
 
   async componentDidMount() {
@@ -77,16 +75,17 @@ class Login extends PureComponent<IProps> {
       response.token && handleLogin({ token: response.token });
     } catch (e) {
       const error = await e;
-      message.error(error?.message || 'Google authentication login fail');
+      message.error(error?.message || "Google authentication login fail");
     } finally {
       this.setState({ isLoading: false });
     }
   }
 
   async redirectLogin() {
-    const { loginSuccess: handleLogin, updateCurrentUser: handleUpdateUser } = this.props;
+    const { loginSuccess: handleLogin, updateCurrentUser: handleUpdateUser } =
+      this.props;
     const token = authService.getToken();
-    if (!token || token === 'null') {
+    if (!token || token === "null") {
       this.setState({ isLoading: false });
       return;
     }
@@ -94,17 +93,20 @@ class Login extends PureComponent<IProps> {
     try {
       await this.setState({ isLoading: true });
       const user = await userService.me({
-        Authorization: token
+        Authorization: token,
       });
       if (!user || !user.data || !user.data._id) return;
       handleLogin();
       handleUpdateUser(user.data);
       user.data.isPerformer
         ? Router.push(
-          { pathname: '/model/profile', query: { username: user.data.username || user.data._id } },
-          `/${user.data.username || user.data._id}`
-        )
-        : Router.push('/home');
+            {
+              pathname: "/model/profile",
+              query: { username: user.data.username || user.data._id },
+            },
+            `/${user.data.username || user.data._id}`
+          )
+        : Router.push("/home");
     } catch {
       this.setState({ isLoading: false });
     }
@@ -113,7 +115,11 @@ class Login extends PureComponent<IProps> {
   async callbackTwitter() {
     const { oauth_verifier, loginSocial: handleLogin } = this.props;
     const twitterInfo = authService.getTwitterToken();
-    if (!oauth_verifier || !twitterInfo.oauthToken || !twitterInfo.oauthTokenSecret) {
+    if (
+      !oauth_verifier ||
+      !twitterInfo.oauthToken ||
+      !twitterInfo.oauthTokenSecret
+    ) {
       return;
     }
     try {
@@ -121,12 +127,12 @@ class Login extends PureComponent<IProps> {
         oauth_verifier,
         oauthToken: twitterInfo.oauthToken,
         oauthTokenSecret: twitterInfo.oauthTokenSecret,
-        role: twitterInfo.role || 'user'
+        role: twitterInfo.role || "user",
       });
       auth.data && auth.data.token && handleLogin({ token: auth.data.token });
     } catch (e) {
       const error = await e;
-      message.error(error?.message || 'Twitter authentication login fail');
+      message.error(error?.message || "Twitter authentication login fail");
     }
   }
 
@@ -136,12 +142,18 @@ class Login extends PureComponent<IProps> {
       await this.setState({ isLoading: true });
       const resp = await (await authService.loginTwitter()).data;
       if (resp && resp.url) {
-        authService.setTwitterToken({ oauthToken: resp.oauthToken, oauthTokenSecret: resp.oauthTokenSecret }, loginAs);
+        authService.setTwitterToken(
+          {
+            oauthToken: resp.oauthToken,
+            oauthTokenSecret: resp.oauthTokenSecret,
+          },
+          loginAs
+        );
         window.location.href = resp.url;
       }
     } catch (e) {
       const error = await e;
-      message.error(error?.message || 'Twitter authentication login fail');
+      message.error(error?.message || "Twitter authentication login fail");
     } finally {
       this.setState({ isLoading: false });
     }
@@ -155,17 +167,26 @@ class Login extends PureComponent<IProps> {
         <Head>
           <title>{ui && ui.siteName}</title>
           <meta name="keywords" content={settings && settings.metaKeywords} />
-          <meta name="description" content={settings && settings.metaDescription} />
+          <meta
+            name="description"
+            content={settings && settings.metaDescription}
+          />
           {/* OG tags */}
           <meta property="og:type" content="website" />
           <meta property="og:title" content={ui && ui.siteName} />
           <meta property="og:image" content={ui && ui.logo} />
-          <meta property="og:description" content={settings && settings.metaDescription} />
+          <meta
+            property="og:description"
+            content={settings && settings.metaDescription}
+          />
           {/* Twitter tags */}
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:title" content={ui && ui.siteName} />
           <meta name="twitter:image" content={ui && ui.logo} />
-          <meta name="twitter:description" content={settings && settings.metaDescription} />
+          <meta
+            name="twitter:description"
+            content={settings && settings.metaDescription}
+          />
         </Head>
         <div>
           <div className="login-box">
@@ -182,9 +203,7 @@ class Login extends PureComponent<IProps> {
                       </div>
                       <p className="text-bg">
                         Discover and Buy content from
-                        <br />
-                        {' '}
-                        your favorite models
+                        <br /> your favorite models
                       </p>
                     </div>
                   </div>
@@ -203,21 +222,37 @@ class Login extends PureComponent<IProps> {
                       >
                         <Form.Item
                           name="username"
-                          validateTrigger={['onChange', 'onBlur']}
-                          rules={[{ required: true, message: 'Email or Username is missing' }]}
+                          validateTrigger={["onChange", "onBlur"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Email or Username is missing",
+                            },
+                          ]}
                         >
-                          <Input disabled={loginAuth.requesting || isLoading} placeholder="Email or Username" />
+                          <Input
+                            disabled={loginAuth.requesting || isLoading}
+                            placeholder="Email or Username"
+                          />
                         </Form.Item>
                         <Form.Item
                           name="password"
-                          validateTrigger={['onChange', 'onBlur']}
-                          rules={[{ required: true, message: 'Please enter your password!' }]}
+                          validateTrigger={["onChange", "onBlur"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your password!",
+                            },
+                          ]}
                         >
-                          <Input.Password disabled={loginAuth.requesting || isLoading} placeholder="Password" />
+                          <Input.Password
+                            disabled={loginAuth.requesting || isLoading}
+                            placeholder="Password"
+                          />
                         </Form.Item>
 
                         {/* <GoogleReCaptcha ui={ui} handleVerify={this.handleVerifyCapcha.bind(this)} /> */}
-                        <Form.Item style={{ textAlign: 'center' }}>
+                        <Form.Item style={{ textAlign: "center" }}>
                           <Button
                             disabled={loginAuth.requesting || isLoading}
                             loading={loginAuth.requesting || isLoading}
@@ -230,7 +265,7 @@ class Login extends PureComponent<IProps> {
                           <p style={{ margin: 0 }}>
                             <Link
                               href={{
-                                pathname: '/auth/forgot-password'
+                                pathname: "/auth/forgot-password",
                               }}
                             >
                               <a>Forgot password?</a>
@@ -246,8 +281,7 @@ class Login extends PureComponent<IProps> {
                         onClick={() => this.loginTwitter()}
                         className="twitter-button"
                       >
-                        <TwitterOutlined />
-                        {' '}
+                        <TwitterOutlined />{" "}
                         <span className="text">Sign in with Twitter</span>
                       </button>
                       <GoogleLoginButton
@@ -257,13 +291,11 @@ class Login extends PureComponent<IProps> {
                         text="Sign in with Google"
                       />
                       <p className="auth-item">
-                        <Link href="/auth/fan-register">
-                          Sign Up
-                        </Link>
+                        <Link href="/auth/fan-register">Sign Up as a Fan</Link>
                       </p>
                       <p>
-                        <Link href="/auth/model-landing-page">
-                          Become a Model
+                        <Link href="/auth/model-register">
+                          Sign Up as a Model
                         </Link>
                       </p>
                     </div>
@@ -282,13 +314,13 @@ class Login extends PureComponent<IProps> {
 const mapStatesToProps = (state: any) => ({
   ui: { ...state.ui },
   settings: { ...state.settings },
-  loginAuth: { ...state.auth.loginAuth }
+  loginAuth: { ...state.auth.loginAuth },
 });
 
 const mapDispatchToProps = {
   login,
   loginSocial,
   loginSuccess,
-  updateCurrentUser
+  updateCurrentUser,
 };
 export default connect(mapStatesToProps, mapDispatchToProps)(Login);
