@@ -6,7 +6,6 @@ import { Router } from "next/router";
 import { IUIConfig } from "src/interfaces/ui-config";
 import { loadUIValue } from "@redux/ui/actions";
 import "./primary-layout.less";
-import LeftHeader from "@components/common/layout/left-header";
 
 const Header = dynamic(() => import("@components/common/layout/header"));
 // const Footer = dynamic(() => import('@components/common/layout/footer'));

@@ -35,7 +35,6 @@ import Router from "next/router";
 import { debounce } from "lodash";
 import dynamic from "next/dynamic";
 import "./index.less";
-import LeftHeader from "@components/common/layout/left-header";
 import { HomeIcon, ModelIcon, TickIcon } from "src/icons";
 
 const StreamListItem = dynamic(
@@ -311,7 +310,7 @@ class HomePage extends PureComponent<IProps> {
                       <div>
                         <span className="active-fan-name">Name</span>
                         <br />
-                        <span>@name</span>
+                        <span className="active-fan-username">@name</span>
                       </div>
                       <div className="tick-icon">
                         <TickIcon />
@@ -329,7 +328,7 @@ class HomePage extends PureComponent<IProps> {
                       <div>
                         <span className="active-fan-name">Name</span>
                         <br />
-                        <span>@name</span>
+                        <span className="active-fan-username">@name</span>
                       </div>
                       <div className="tick-icon">
                         <TickIcon />

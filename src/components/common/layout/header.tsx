@@ -185,9 +185,9 @@ class Header extends PureComponent<IProps> {
           <div className="main-container">
             <Layout.Header className="header" id="layoutHeader">
               <div className="nav-bar">
-                <div style={{ cursor: "pointer" }}>
+                <div style={{ cursor: "pointer" }} className="sharebums-logo">
                   <Link href="/home">
-                    <img src="NA" alt="Sharebums Logo" />
+                    <a>Sharebums</a>
                   </Link>
                 </div>
                 <ul className={user._id ? "nav-icons" : "nav-icons custom"}>

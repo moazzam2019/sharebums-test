@@ -1,9 +1,9 @@
-import { PureComponent } from 'react';
-import { Alert, Spin } from 'antd';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { IFeed } from '@interfaces/index';
-import FeedCard from './post-card';
-import { FeedGridCard } from './grid-card';
+import { PureComponent } from "react";
+import { Alert, Spin } from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { IFeed } from "@interfaces/index";
+import FeedCard from "./post-card";
+import { FeedGridCard } from "./grid-card";
 
 interface IProps {
   items: IFeed[];
@@ -24,7 +24,7 @@ export default class ScrollListFeed extends PureComponent<IProps> {
       canLoadmore,
       loading = false,
       isGrid = false,
-      notFoundText
+      notFoundText,
     } = this.props;
     return (
       <InfiniteScroll
@@ -35,9 +35,9 @@ export default class ScrollListFeed extends PureComponent<IProps> {
         endMessage={null}
         scrollThreshold={0.8}
       >
-        <div className={isGrid ? 'grid-view' : 'fixed-scroll'}>
-          {items.length > 0
-            && items.map((item) => {
+        <div className={isGrid ? "grid-view" : "fixed-scroll"}>
+          {items.length > 0 &&
+            items.map((item) => {
               if (isGrid) {
                 return <FeedGridCard feed={item} key={item._id} />;
               }
@@ -54,7 +54,7 @@ export default class ScrollListFeed extends PureComponent<IProps> {
           <div className="main-container custom">
             <Alert
               className="text-center"
-              message={notFoundText || 'No post was found'}
+              message={notFoundText || "No post was found"}
               type="info"
             />
           </div>
