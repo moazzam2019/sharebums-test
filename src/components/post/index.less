@@ -1,8 +1,10 @@
-@import '../../../style/vars.less';
+@import "../../../style/vars.less";
 
 .feed-card {
   margin-bottom: 25px;
+  padding-bottom: 25px;
   border-bottom: 0.5px solid @light-grey;
+  width: 640px;
 
   .feed-top {
     display: flex;
@@ -44,7 +46,7 @@
 
         h5 {
           font-size: 13px;
-          color: @gray
+          color: @gray;
         }
       }
 
@@ -194,46 +196,12 @@
       white-space: pre-line;
       text-overflow: ellipsis;
       overflow: hidden;
+      width: 460px;
 
       &::first-letter {
         text-transform: capitalize;
       }
     }
-  }
-
-  .feed-actions {
-    display: flex;
-    width: 100%;
-    transition: all 0.3s ease-in-out;
-
-    .action-item {
-      width: 100%;
-      padding: 5px 10px;
-      text-align: left;
-      align-items: center;
-      display: flex;
-
-      .action-ico {
-        cursor: pointer;
-        padding: 5px 10px;
-
-        .anticon {
-          font-size: 20px;
-        }
-
-        &:hover,
-        &.active {
-          color: @theme-color
-        }
-      }
-
-      &:last-child {
-        text-align: right;
-        justify-content: flex-end;
-        width: 25%;
-      }
-    }
-
   }
 
   .videojs-player {
@@ -242,7 +210,7 @@
 
       .vjs-poster {
         border-radius: 3px;
-        border: none
+        border: none;
       }
     }
   }
@@ -265,7 +233,7 @@
     .f-remove {
       position: absolute;
       right: 5px;
-      top: 5px
+      top: 5px;
     }
 
     .f-upload-thumb {
@@ -341,7 +309,7 @@
       height: auto;
       line-height: normal;
 
-      &>div {
+      & > div {
         height: 100%;
         display: flex;
         align-items: center;
@@ -374,19 +342,17 @@
     align-items: center;
 
     .count-media-item {
-      background: rgba(121, 121, 121, .4);
+      background: rgba(121, 121, 121, 0.4);
       color: @white;
       padding: 5px;
       border-radius: 5px;
       font-size: 10px;
       z-index: 999;
-
     }
-
   }
 
   .proccessing {
-    background-image: url('/static/leaf.jpg');
+    background-image: url("/static/leaf.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     height: 400px;
@@ -561,16 +527,31 @@
     }
 
     &.left {
-      background: linear-gradient(90deg, @theme-color 10%, @primary-color 50%, @theme-color 90%);
+      background: linear-gradient(
+        90deg,
+        @theme-color 10%,
+        @primary-color 50%,
+        @theme-color 90%
+      );
     }
 
     &.right {
-      background: linear-gradient(180deg, @orange-color 10%, @secondary-color 50%, @orange-color 90%);
+      background: linear-gradient(
+        180deg,
+        @orange-color 10%,
+        @secondary-color 50%,
+        @orange-color 90%
+      );
     }
 
     &.middle {
       margin: auto;
-      background: linear-gradient(180deg, @info-color 10%, @processing-color 50%, @info-color 90%);
+      background: linear-gradient(
+        180deg,
+        @info-color 10%,
+        @processing-color 50%,
+        @info-color 90%
+      );
     }
 
     span {
@@ -597,7 +578,6 @@
 .submit-btns {
   margin: 15px 0;
 }
-
 
 .search-post-bar {
   display: flex;
@@ -720,7 +700,7 @@
 
       &.blured {
         img {
-          filter: blur(15px)
+          filter: blur(15px);
         }
       }
 
@@ -762,7 +742,6 @@
           align-items: center;
           gap: 5px;
         }
-
       }
     }
 
@@ -802,6 +781,54 @@
       .card-thumb {
         height: 250px;
       }
+    }
+  }
+}
+
+.feed-container-main {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.feed-card-2 {
+  align-self: flex-end;
+  padding-bottom: 50px;
+}
+
+.feed-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+
+  .action-item {
+    width: 100%;
+    padding: 5px 10px;
+    text-align: left;
+    align-items: center;
+    display: flex;
+
+    .action-ico {
+      cursor: pointer;
+      padding: 5px 10px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      .anticon {
+        font-size: 20px;
+      }
+
+      &:hover,
+      &.active {
+        color: @theme-color;
+      }
+    }
+
+    &:last-child {
+      text-align: right;
+      justify-content: flex-end;
+      width: 25%;
     }
   }
 }

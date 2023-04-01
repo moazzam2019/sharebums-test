@@ -232,7 +232,7 @@ class Header extends PureComponent<IProps> {
                           )}
                         </>
                       )}
-                      {user._id && !user.isPerformer && (
+                      {/* {user._id && !user.isPerformer && (
                         <li
                           key="model"
                           className={
@@ -245,7 +245,7 @@ class Header extends PureComponent<IProps> {
                             </a>
                           </Link>
                         </li>
-                      )}
+                      )} */}
                       {user._id && (
                         <li
                           key="messenger"

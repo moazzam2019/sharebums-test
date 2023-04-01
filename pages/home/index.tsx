@@ -251,7 +251,7 @@ class HomePage extends PureComponent<IProps> {
             <title>{ui && ui.siteName} | Home</title>
           </Head>
           <div className="home-page">
-            <Banner banners={topBanners} />
+            {/* <Banner banners={topBanners} /> */}
             <div className="main-container">
               {/* <div className="home-heading">
                 <h3>HOME</h3>
@@ -284,7 +284,7 @@ class HomePage extends PureComponent<IProps> {
                           <div className="icon">
                             <HomeIcon />
                           </div>
-                          <div className="icon-name">Home </div>
+                          <div className="icon-name">Home</div>
                         </div>
                       </a>
                     </Link>
@@ -294,7 +294,7 @@ class HomePage extends PureComponent<IProps> {
                           <div className="icon">
                             <ModelIcon />
                           </div>
-                          <div className="icon-name">Models </div>
+                          <div className="icon-name">Models</div>
                         </div>
                       </a>
                     </Link>
