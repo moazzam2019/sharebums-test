@@ -1,42 +1,59 @@
+import { Layout, Tabs, Button, message, Modal, Image, Tooltip } from "antd";
+import { PureComponent } from "react";
+import { connect } from "react-redux";
+import { getVideos, moreVideo } from "@redux/video/actions";
+import { getFeeds, moreFeeds, removeFeedSuccess } from "@redux/feed/actions";
+import { listProducts, moreProduct } from "@redux/product/actions";
+import { moreGalleries, getGalleries } from "@redux/gallery/actions";
+import { updateBalance } from "@redux/user/actions";
+import Sidebar from "@components/common/layout/sidebar";
 import {
-  Layout, Tabs, Button, message, Modal, Image, Tooltip
-} from 'antd';
-import { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { getVideos, moreVideo } from '@redux/video/actions';
-import { getFeeds, moreFeeds, removeFeedSuccess } from '@redux/feed/actions';
-import { listProducts, moreProduct } from '@redux/product/actions';
-import { moreGalleries, getGalleries } from '@redux/gallery/actions';
-import { updateBalance } from '@redux/user/actions';
+  performerService,
+  tokenTransctionService,
+  feedService,
+  reactionService,
+  paymentService,
+  utilsService,
+  followService,
+} from "src/services";
+import Head from "next/head";
+import { EditOutlined } from "@ant-design/icons";
 import {
-  performerService, tokenTransctionService, feedService, reactionService, paymentService,
-  utilsService, followService
-} from 'src/services';
-import Head from 'next/head';
+  TickIcon,
+  FeedFillSvg,
+  VideoFillSvg,
+  ShopSvg,
+  ImageFillBlackSvg,
+  CameraFillSvg,
+  MessageIcon,
+  DollarSvg,
+} from "src/icons";
+import { ScrollListProduct } from "@components/product/scroll-list-item";
+import ScrollListFeed from "@components/post/scroll-list";
+import { ScrollListVideo } from "@components/video/scroll-list-item";
+import { ScrollListGallery } from "@components/gallery/scroll-list-gallery";
+import { PerformerInfo } from "@components/performer/table-info";
 import {
-  EditOutlined
-} from '@ant-design/icons';
+  ConfirmSubscriptionPerformerForm,
+  TipPerformerForm,
+} from "@components/performer";
+import SearchPostBar from "@components/post/search-bar";
+import Loader from "@components/common/base/loader";
+import { VideoPlayer } from "@components/common";
 import {
-  TickIcon, FeedFillSvg, VideoFillSvg, ShopSvg, ImageFillBlackSvg, CameraFillSvg, MessageIcon, DollarSvg
-} from 'src/icons';
-import { ScrollListProduct } from '@components/product/scroll-list-item';
-import ScrollListFeed from '@components/post/scroll-list';
-import { ScrollListVideo } from '@components/video/scroll-list-item';
-import { ScrollListGallery } from '@components/gallery/scroll-list-gallery';
-import { PerformerInfo } from '@components/performer/table-info';
-import { ConfirmSubscriptionPerformerForm, TipPerformerForm } from '@components/performer';
-import SearchPostBar from '@components/post/search-bar';
-import Loader from '@components/common/base/loader';
-import { VideoPlayer } from '@components/common';
-import {
-  IPerformer, IUser, IUIConfig, IFeed, ICountry, ISettings
-} from 'src/interfaces';
-import { shortenLargeNumber } from '@lib/index';
-import Link from 'next/link';
-import Router from 'next/router';
-import Error from 'next/error';
-import '@components/performer/performer.less';
-import moment from 'moment';
+  IPerformer,
+  IUser,
+  IUIConfig,
+  IFeed,
+  ICountry,
+  ISettings,
+} from "src/interfaces";
+import { shortenLargeNumber } from "@lib/index";
+import Link from "next/link";
+import Router from "next/router";
+import Error from "next/error";
+import "@components/performer/performer.less";
+import moment from "moment";
 
 interface IProps {
   ui: IUIConfig;
@@ -63,9 +80,9 @@ interface IProps {
 
 const { TabPane } = Tabs;
 const initialFilter = {
-  q: '',
-  fromDate: '',
-  toDate: ''
+  q: "",
+  fromDate: "",
+  toDate: "",
 };
 
 class PerformerProfile extends PureComponent<IProps> {
@@ -85,11 +102,11 @@ class PerformerProfile extends PureComponent<IProps> {
     isBookMarked: false,
     requesting: false,
     openSubscriptionModal: false,
-    tab: 'post',
+    tab: "post",
     filter: initialFilter,
     isGrid: true,
-    subscriptionType: 'monthly',
-    isFollowed: false
+    subscriptionType: "monthly",
+    isFollowed: false,
   };
 
   static async getInitialProps({ ctx }) {
@@ -97,13 +114,13 @@ class PerformerProfile extends PureComponent<IProps> {
     try {
       const [performer, countries] = await Promise.all([
         performerService.findOne(query.username, {
-          Authorization: ctx.token || ''
+          Authorization: ctx.token || "",
         }),
-        utilsService.countriesList()
+        utilsService.countriesList(),
       ]);
       return {
         performer: performer?.data,
-        countries: countries?.data || []
+        countries: countries?.data || [],
       };
     } catch (e) {
       const error = await Promise.resolve(e);
@@ -114,9 +131,18 @@ class PerformerProfile extends PureComponent<IProps> {
   async componentDidMount() {
     const { performer } = this.props;
     if (performer) {
-      const notShownWelcomeVideos = localStorage.getItem('notShownWelcomeVideos');
-      const showWelcomVideo = !notShownWelcomeVideos || (notShownWelcomeVideos && !notShownWelcomeVideos.includes(performer._id));
-      this.setState({ isBookMarked: performer.isBookMarked, showWelcomVideo, isFollowed: !!performer.isFollowed });
+      const notShownWelcomeVideos = localStorage.getItem(
+        "notShownWelcomeVideos"
+      );
+      const showWelcomVideo =
+        !notShownWelcomeVideos ||
+        (notShownWelcomeVideos &&
+          !notShownWelcomeVideos.includes(performer._id));
+      this.setState({
+        isBookMarked: performer.isBookMarked,
+        showWelcomVideo,
+        isFollowed: !!performer.isFollowed,
+      });
       this.loadItems();
     }
   }
@@ -124,11 +150,13 @@ class PerformerProfile extends PureComponent<IProps> {
   // eslint-disable-next-line react/sort-comp
   handleViewWelcomeVideo() {
     const { performer } = this.props;
-    const notShownWelcomeVideos = localStorage.getItem('notShownWelcomeVideos');
+    const notShownWelcomeVideos = localStorage.getItem("notShownWelcomeVideos");
     if (!notShownWelcomeVideos?.includes(performer._id)) {
-      const Ids = JSON.parse(notShownWelcomeVideos || '[]');
-      const values = Array.isArray(Ids) ? Ids.concat([performer._id]) : [performer._id];
-      localStorage.setItem('notShownWelcomeVideos', JSON.stringify(values));
+      const Ids = JSON.parse(notShownWelcomeVideos || "[]");
+      const values = Array.isArray(Ids)
+        ? Ids.concat([performer._id])
+        : [performer._id];
+      localStorage.setItem("notShownWelcomeVideos", JSON.stringify(values));
     }
     this.setState({ showWelcomVideo: false });
   }
@@ -136,18 +164,22 @@ class PerformerProfile extends PureComponent<IProps> {
   async handleDeleteFeed(feed: IFeed) {
     const { user, removeFeedSuccess: handleRemoveFeed } = this.props;
     if (user._id !== feed.fromSourceId) {
-      message.error('Permission denied');
+      message.error("Permission denied");
       return;
     }
-    if (!window.confirm('All earnings are related to this post will be refunded. Are you sure to remove?')) {
+    if (
+      !window.confirm(
+        "All earnings are related to this post will be refunded. Are you sure to remove?"
+      )
+    ) {
       return;
     }
     try {
       await feedService.delete(feed._id);
-      message.success('Deleted post success');
+      message.success("Deleted post success");
       handleRemoveFeed({ feed });
     } catch {
-      message.error('Something went wrong, please try again later');
+      message.error("Something went wrong, please try again later");
     }
   }
 
@@ -155,7 +187,7 @@ class PerformerProfile extends PureComponent<IProps> {
     const { performer, user } = this.props;
     const { isFollowed, requesting, tab } = this.state;
     if (!user._id) {
-      message.error('Please log in or register!');
+      message.error("Please log in or register!");
       return;
     }
     if (requesting || user.isPerformer) return;
@@ -168,12 +200,12 @@ class PerformerProfile extends PureComponent<IProps> {
         await followService.delete(performer?._id);
         this.setState({ isFollowed: false, requesting: false });
       }
-      if (tab === 'post') {
+      if (tab === "post") {
         this.loadItems();
       }
     } catch (e) {
       const error = await e;
-      message.error(error.message || 'Error occured, please try again later');
+      message.error(error.message || "Error occured, please try again later");
       this.setState({ requesting: false });
     }
   };
@@ -187,21 +219,21 @@ class PerformerProfile extends PureComponent<IProps> {
       if (!isBookMarked) {
         await reactionService.create({
           objectId: performer?._id,
-          action: 'book_mark',
-          objectType: 'performer'
+          action: "book_mark",
+          objectType: "performer",
         });
         this.setState({ isBookMarked: true, requesting: false });
       } else {
         await reactionService.delete({
           objectId: performer?._id,
-          action: 'book_mark',
-          objectType: 'performer'
+          action: "book_mark",
+          objectType: "performer",
         });
         this.setState({ isBookMarked: false, requesting: false });
       }
     } catch (e) {
       const error = await e;
-      message.error(error.message || 'Error occured, please try again later');
+      message.error(error.message || "Error occured, please try again later");
       this.setState({ requesting: false });
     }
   }
@@ -215,70 +247,89 @@ class PerformerProfile extends PureComponent<IProps> {
   handleJoinStream = () => {
     const { user, performer } = this.props;
     if (!user._id) {
-      message.error('Please log in or register!');
+      message.error("Please log in or register!");
       return;
     }
     if (user.isPerformer) return;
     if (!performer?.isSubscribed) {
-      message.error('Please subscribe to this model!');
+      message.error("Please subscribe to this model!");
       return;
     }
-    Router.push({
-      pathname: '/streaming/details',
-      query: {
-        performer: JSON.stringify(performer),
-        username: performer?.username || performer?._id
-      }
-    }, `/streaming/${performer?.username || performer?._id}`);
+    Router.push(
+      {
+        pathname: "/streaming/details",
+        query: {
+          performer: JSON.stringify(performer),
+          username: performer?.username || performer?._id,
+        },
+      },
+      `/streaming/${performer?.username || performer?._id}`
+    );
   };
 
   async loadItems() {
     const {
-      performer, getGalleries: handleGetGalleries, getVideos: handleGetVids, getFeeds: handleGetFeeds,
-      listProducts: handleGetProducts
+      performer,
+      getGalleries: handleGetGalleries,
+      getVideos: handleGetVids,
+      getFeeds: handleGetFeeds,
+      listProducts: handleGetProducts,
     } = this.props;
-    const {
-      itemPerPage, filter, tab
-    } = this.state;
+    const { itemPerPage, filter, tab } = this.state;
     const query = {
       limit: itemPerPage,
       offset: 0,
       performerId: performer?._id,
-      q: filter.q || '',
-      fromDate: filter.fromDate || '',
-      toDate: filter.toDate || ''
+      q: filter.q || "",
+      fromDate: filter.fromDate || "",
+      toDate: filter.toDate || "",
     };
     switch (tab) {
-      case 'post':
-        this.setState({ feedPage: 0 }, () => handleGetFeeds({
-          ...query
-        }));
-        this.setState({ videoPage: 0 }, () => handleGetVids({
-          ...query
-        }));
-        this.setState({ galleryPage: 0 }, () => handleGetGalleries({
-          ...query
-        }));
-        this.setState({ productPage: 0 }, () => handleGetProducts({
-          ...query
-        }));
+      case "post":
+        this.setState({ feedPage: 0 }, () =>
+          handleGetFeeds({
+            ...query,
+          })
+        );
+        this.setState({ videoPage: 0 }, () =>
+          handleGetVids({
+            ...query,
+          })
+        );
+        this.setState({ galleryPage: 0 }, () =>
+          handleGetGalleries({
+            ...query,
+          })
+        );
+        this.setState({ productPage: 0 }, () =>
+          handleGetProducts({
+            ...query,
+          })
+        );
         break;
-      case 'photo':
-        this.setState({ galleryPage: 0 }, () => handleGetGalleries({
-          ...query
-        }));
+      case "photo":
+        this.setState({ galleryPage: 0 }, () =>
+          handleGetGalleries({
+            ...query,
+          })
+        );
         break;
-      case 'video':
-        this.setState({ videoPage: 0 }, () => handleGetVids({
-          ...query
-        }));
+      case "video":
+        this.setState({ videoPage: 0 }, () =>
+          handleGetVids({
+            ...query,
+          })
+        );
         break;
-      case 'store':
-        this.setState({ productPage: 0 }, () => handleGetProducts({
-          ...query
-        }));
+      case "store":
+        this.setState({ productPage: 0 }, () =>
+          handleGetProducts({
+            ...query,
+          })
+        );
         break;
-      default: break;
+      default:
+        break;
     }
   }
 
@@ -286,13 +337,13 @@ class PerformerProfile extends PureComponent<IProps> {
     const { performer, user, settings } = this.props;
     const { subscriptionType } = this.state;
     if (!user._id) {
-      message.error('Please log in!');
-      Router.push('/');
+      message.error("Please log in!");
+      Router.push("/");
       return;
     }
-    if (settings.paymentGateway === 'stripe' && !user.stripeCardIds.length) {
-      message.error('Please add a payment card');
-      Router.push('/user/cards');
+    if (settings.paymentGateway === "stripe" && !user.stripeCardIds.length) {
+      message.error("Please add a payment card");
+      Router.push("/user/cards");
       return;
     }
     try {
@@ -300,16 +351,16 @@ class PerformerProfile extends PureComponent<IProps> {
       const resp = await paymentService.subscribePerformer({
         type: subscriptionType,
         performerId: performer._id,
-        paymentGateway: settings.paymentGateway
+        paymentGateway: settings.paymentGateway,
       });
-      if (settings.paymentGateway === 'ccbill') {
+      if (settings.paymentGateway === "ccbill") {
         window.location.href = resp?.data?.paymentUrl;
       } else {
         this.setState({ openSubscriptionModal: false });
       }
     } catch (e) {
       const err = await e;
-      message.error(err.message || 'error occured, please try again later');
+      message.error(err.message || "error occured, please try again later");
       this.setState({ openSubscriptionModal: false, submiting: false });
     }
   }
@@ -317,18 +368,21 @@ class PerformerProfile extends PureComponent<IProps> {
   async sendTip(price: number) {
     const { performer, user, updateBalance: handleUpdateBalance } = this.props;
     if (user.balance < price) {
-      message.error('You have an insufficient wallet balance. Please top up.');
-      Router.push('/wallet');
+      message.error("You have an insufficient wallet balance. Please top up.");
+      Router.push("/wallet");
       return;
     }
     try {
       await this.setState({ requesting: true });
-      await tokenTransctionService.sendTip(performer?._id, { performerId: performer?._id, price });
-      message.success('Thank you for the tip');
+      await tokenTransctionService.sendTip(performer?._id, {
+        performerId: performer?._id,
+        price,
+      });
+      message.success("Thank you for the tip");
       handleUpdateBalance({ token: -price });
     } catch (e) {
       const err = await e;
-      message.error(err.message || 'error occured, please try again later');
+      message.error(err.message || "error occured, please try again later");
     } finally {
       this.setState({ requesting: false, openTipModal: false });
     }
@@ -336,56 +390,76 @@ class PerformerProfile extends PureComponent<IProps> {
 
   async loadMoreItem() {
     const {
-      feedPage, videoPage, productPage, itemPerPage, galleryPage,
-      tab, filter
+      feedPage,
+      videoPage,
+      productPage,
+      itemPerPage,
+      galleryPage,
+      tab,
+      filter,
     } = this.state;
     const {
       moreFeeds: getMoreFeed,
       moreVideo: getMoreVids,
       moreProduct: getMoreProd,
       moreGalleries: getMoreGallery,
-      performer
+      performer,
     } = this.props;
     const query = {
       limit: itemPerPage,
       performerId: performer._id,
-      q: filter.q || '',
-      fromDate: filter.fromDate || '',
-      toDate: filter.toDate || ''
+      q: filter.q || "",
+      fromDate: filter.fromDate || "",
+      toDate: filter.toDate || "",
     };
-    if (tab === 'post') {
-      this.setState({
-        feedPage: feedPage + 1
-      }, () => getMoreFeed({
-        ...query,
-        offset: (feedPage + 1) * itemPerPage
-      }));
+    if (tab === "post") {
+      this.setState(
+        {
+          feedPage: feedPage + 1,
+        },
+        () =>
+          getMoreFeed({
+            ...query,
+            offset: (feedPage + 1) * itemPerPage,
+          })
+      );
     }
-    if (tab === 'video') {
-      this.setState({
-        videoPage: videoPage + 1
-      }, () => getMoreVids({
-        ...query,
-        offset: (videoPage + 1) * itemPerPage
-      }));
+    if (tab === "video") {
+      this.setState(
+        {
+          videoPage: videoPage + 1,
+        },
+        () =>
+          getMoreVids({
+            ...query,
+            offset: (videoPage + 1) * itemPerPage,
+          })
+      );
     }
-    if (tab === 'photo') {
-      await this.setState({
-        galleryPage: galleryPage + 1
-      }, () => {
-        getMoreGallery({
-          ...query,
-          offset: (galleryPage + 1) * itemPerPage
-        });
-      });
+    if (tab === "photo") {
+      await this.setState(
+        {
+          galleryPage: galleryPage + 1,
+        },
+        () => {
+          getMoreGallery({
+            ...query,
+            offset: (galleryPage + 1) * itemPerPage,
+          });
+        }
+      );
     }
-    if (tab === 'store') {
-      this.setState({
-        productPage: productPage + 1
-      }, () => getMoreProd({
-        ...query,
-        offset: (productPage + 1) * itemPerPage
-      }));
+    if (tab === "store") {
+      this.setState(
+        {
+          productPage: productPage + 1,
+        },
+        () =>
+          getMoreProd({
+            ...query,
+            offset: (productPage + 1) * itemPerPage,
+          })
+      );
     }
   }
 
@@ -399,15 +473,36 @@ class PerformerProfile extends PureComponent<IProps> {
       videoState,
       productState,
       galleryState,
-      countries
+      countries,
     } = this.props;
     if (error) {
-      return <Error statusCode={error?.statusCode || 404} title={error?.message || 'Sorry, we can\'t find this page'} />;
+      return (
+        <Error
+          statusCode={error?.statusCode || 404}
+          title={error?.message || "Sorry, we can't find this page"}
+        />
+      );
     }
-    const { items: feeds = [], total: totalFeed = 0, requesting: loadingFeed } = feedState;
-    const { items: videos = [], total: totalVideos = 0, requesting: loadingVideo } = videoState;
-    const { items: products = [], total: totalProducts = 0, requesting: loadingPrd } = productState;
-    const { items: galleries = [], total: totalGalleries = 0, requesting: loadingGallery } = galleryState;
+    const {
+      items: feeds = [],
+      total: totalFeed = 0,
+      requesting: loadingFeed,
+    } = feedState;
+    const {
+      items: videos = [],
+      total: totalVideos = 0,
+      requesting: loadingVideo,
+    } = videoState;
+    const {
+      items: products = [],
+      total: totalProducts = 0,
+      requesting: loadingPrd,
+    } = productState;
+    const {
+      items: galleries = [],
+      total: totalGalleries = 0,
+      requesting: loadingGallery,
+    } = galleryState;
 
     const {
       showWelcomVideo,
@@ -417,7 +512,7 @@ class PerformerProfile extends PureComponent<IProps> {
       tab,
       isGrid,
       subscriptionType,
-      isFollowed
+      isFollowed,
     } = this.state;
     return (
       <Layout>
@@ -433,32 +528,43 @@ class PerformerProfile extends PureComponent<IProps> {
           <meta property="og:type" content="website" />
           <meta
             property="og:title"
-            content={`${ui?.siteName} | ${performer?.name || performer?.username}`}
+            content={`${ui?.siteName} | ${
+              performer?.name || performer?.username
+            }`}
           />
-          <meta property="og:image" content={performer?.avatar || '/static/no-avatar.png'} />
           <meta
-            property="og:description"
-            content={performer?.bio}
+            property="og:image"
+            content={performer?.avatar || "/static/no-avatar.png"}
           />
+          <meta property="og:description" content={performer?.bio} />
           <meta name="twitter:card" content="summary" />
           <meta
             name="twitter:title"
-            content={`${ui?.siteName} | ${performer?.name || performer?.username}`}
+            content={`${ui?.siteName} | ${
+              performer?.name || performer?.username
+            }`}
           />
-          <meta name="twitter:image" content={performer?.avatar || '/static/no-avatar.png'} />
+          <meta
+            name="twitter:image"
+            content={performer?.avatar || "/static/no-avatar.png"}
+          />
           <meta name="twitter:description" content={performer?.bio} />
         </Head>
         <div className="main-container">
-          <div className="top-profile" style={{ backgroundImage: `url('${performer?.cover || '/static/banner-image.jpg'}')` }}>
+          <Sidebar />
+          <div
+            className="top-profile"
+            style={{
+              backgroundImage: `url('${
+                performer?.cover || "/static/banner-image.jpg"
+              }')`,
+            }}
+          >
             {user.isPerformer && !performer?.cover && (
               <div className="add-image">
                 <Link href="/model/account">
                   <Button className="secondary">
-                    <CameraFillSvg />
-                    {' '}
-                    <span>
-                      Add header image
-                    </span>
+                    <CameraFillSvg /> <span>Add header image</span>
                   </Button>
                 </Link>
               </div>
@@ -470,32 +576,51 @@ class PerformerProfile extends PureComponent<IProps> {
             <div className="fl-col">
               <Image
                 alt="main-avt"
-                src={performer?.avatar || '/static/no-avatar.png'}
+                src={performer?.avatar || "/static/no-avatar.png"}
                 fallback="/static/no-avatar.png"
               />
-              {user?._id !== performer?._id && <span className={performer?.isOnline > 0 ? 'online-status' : 'online-status off'} />}
+              {user?._id !== performer?._id && (
+                <span
+                  className={
+                    performer?.isOnline > 0
+                      ? "online-status"
+                      : "online-status off"
+                  }
+                />
+              )}
               <div className="m-user-name">
                 <h4>
-                  {performer?.name || 'N/A'}
+                  {performer?.name || "N/A"}
                   &nbsp;
-                  {performer?.verifiedAccount && (
-                    <TickIcon />
+                  {performer?.verifiedAccount && <TickIcon />}
+                  &nbsp;
+                  {performer?.live > 0 && user?._id !== performer?._id && (
+                    <a
+                      aria-hidden
+                      onClick={this.handleJoinStream}
+                      className="live-status"
+                    >
+                      Live
+                    </a>
                   )}
-                  &nbsp;
-                  {performer?.live > 0 && user?._id !== performer?._id && <a aria-hidden onClick={this.handleJoinStream} className="live-status">Live</a>}
-                  {user?._id === performer?._id && <Link href="/model/account"><a><EditOutlined className="primary-color" /></a></Link>}
+                  {user?._id === performer?._id && (
+                    <Link href="/model/account">
+                      <a>
+                        <EditOutlined className="primary-color" />
+                      </a>
+                    </Link>
+                  )}
                 </h4>
-                <h5 style={{ textTransform: 'none' }}>
-                  @
-                  {performer?.username || 'n/a'}
+                <h5 style={{ textTransform: "none" }}>
+                  @{performer?.username || "n/a"}
                 </h5>
                 {performer?.offlineAt ? (
-                  <h5 style={{ textTransform: 'none' }}>
-                    Last seen
-                    {' '}
-                    {moment(performer?.offlineAt).fromNow()}
+                  <h5 style={{ textTransform: "none" }}>
+                    Last seen {moment(performer?.offlineAt).fromNow()}
                   </h5>
-                ) : <div style={{ minHeight: '23px' }} />}
+                ) : (
+                  <div style={{ minHeight: "23px" }} />
+                )}
               </div>
             </div>
             <div className="btn-grp">
@@ -504,13 +629,15 @@ class PerformerProfile extends PureComponent<IProps> {
                   <Tooltip title="Send Message">
                     <Button
                       disabled={!user._id || user.isPerformer}
-                      onClick={() => Router.push({
-                        pathname: '/messages',
-                        query: {
-                          toSource: 'performer',
-                          toId: (performer?._id) || ''
-                        }
-                      })}
+                      onClick={() =>
+                        Router.push({
+                          pathname: "/messages",
+                          query: {
+                            toSource: "performer",
+                            toId: performer?._id || "",
+                          },
+                        })
+                      }
                     >
                       <MessageIcon />
                     </Button>
@@ -526,10 +653,10 @@ class PerformerProfile extends PureComponent<IProps> {
                   <Tooltip title="">
                     <Button
                       disabled={!user._id || user.isPerformer}
-                      className={isFollowed ? 'active' : 'custom'}
+                      className={isFollowed ? "active" : "custom"}
                       onClick={() => this.handleFollow()}
                     >
-                      {isFollowed ? 'Following' : 'Follow'}
+                      {isFollowed ? "Following" : "Follow"}
                     </Button>
                   </Tooltip>
                 </>
@@ -540,8 +667,7 @@ class PerformerProfile extends PureComponent<IProps> {
                 <span>
                   <b className="tab-item-bold">
                     {shortenLargeNumber(performer?.stats?.subscribers || 0)}
-                  </b>
-                  {' '}
+                  </b>{" "}
                   Followers
                 </span>
               </div>
@@ -549,13 +675,12 @@ class PerformerProfile extends PureComponent<IProps> {
                 <span>
                   <b className="tab-item-bold">
                     {shortenLargeNumber(totalFeed || 0)}
-                  </b>
-                  {' '}
+                  </b>{" "}
                   Posts
                 </span>
               </div>
             </div>
-            <div className={user.isPerformer ? 'mar-0 pro-desc' : 'pro-desc'}>
+            <div className={user.isPerformer ? "mar-0 pro-desc" : "pro-desc"}>
               <PerformerInfo countries={countries} performer={performer} />
             </div>
             {!performer?.isSubscribed && !user.isPerformer && (
@@ -563,18 +688,16 @@ class PerformerProfile extends PureComponent<IProps> {
                 <button
                   type="button"
                   className="sub-btn"
-                  disabled={(submiting)}
+                  disabled={submiting}
                   onClick={() => {
-                    this.setState({ openSubscriptionModal: true, subscriptionType: 'monthly' });
+                    this.setState({
+                      openSubscriptionModal: true,
+                      subscriptionType: "monthly",
+                    });
                   }}
                 >
-                  SUBSCRIBE FOR
-                  {' '}
-                  {performer && performer?.monthlyPrice.toFixed(2)}
-                  {' '}
-                  $
-                  {' '}
-                  PER MONTH
+                  SUBSCRIBE FOR{" "}
+                  {performer && performer?.monthlyPrice.toFixed(2)} $ PER MONTH
                 </button>
               </div>
             )}
@@ -583,18 +706,15 @@ class PerformerProfile extends PureComponent<IProps> {
                 <button
                   type="button"
                   className="sub-btn btn-year"
-                  disabled={(submiting)}
+                  disabled={submiting}
                   onClick={() => {
-                    this.setState({ openSubscriptionModal: true, subscriptionType: 'yearly' });
+                    this.setState({
+                      openSubscriptionModal: true,
+                      subscriptionType: "yearly",
+                    });
                   }}
                 >
-                  SUBSCRIBE FOR
-                  {' '}
-                  {performer?.yearlyPrice.toFixed(2)}
-                  {' '}
-                  $
-                  {' '}
-                  PER YEAR
+                  SUBSCRIBE FOR {performer?.yearlyPrice.toFixed(2)} $ PER YEAR
                 </button>
               </div>
             )}
@@ -619,30 +739,35 @@ class PerformerProfile extends PureComponent<IProps> {
             )} */}
           </div>
         </div>
-        <div style={{ marginTop: '20px' }} />
+        <div style={{ marginTop: "20px" }} />
         <div className="main-container">
           <div className="model-content">
             <Tabs
               defaultActiveKey="post"
               size="large"
               onTabClick={(t: string) => {
-                this.setState({ tab: t, filter: initialFilter, isGrid: true }, () => this.loadItems());
+                this.setState(
+                  { tab: t, filter: initialFilter, isGrid: true },
+                  () => this.loadItems()
+                );
               }}
             >
               <TabPane
-                tab={(
+                tab={
                   <>
-                    <FeedFillSvg />
-                    {' '}
-                    All
+                    <FeedFillSvg /> All
                   </>
-                )}
+                }
                 key="post"
               >
                 {/* <div className="heading-tab">
                   <SearchPostBar searching={loadingFeed} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
                 </div> */}
-                <div className={isGrid ? 'main-container' : 'main-container custom'}>
+                <div
+                  className={
+                    isGrid ? "main-container" : "main-container custom"
+                  }
+                >
                   <ScrollListFeed
                     items={feeds}
                     loading={loadingFeed}
@@ -654,15 +779,11 @@ class PerformerProfile extends PureComponent<IProps> {
                 </div>
               </TabPane>
               <TabPane
-                tab={(
+                tab={
                   <>
-                    <VideoFillSvg />
-                    {' '}
-                    Video
-                    {' '}
-                    {`(${totalVideos})`}
+                    <VideoFillSvg /> Video {`(${totalVideos})`}
                   </>
-                )}
+                }
                 key="video"
               >
                 {/* <div className="heading-tab">
@@ -678,15 +799,11 @@ class PerformerProfile extends PureComponent<IProps> {
                 </div>
               </TabPane>
               <TabPane
-                tab={(
+                tab={
                   <>
-                    <ImageFillBlackSvg />
-                    {' '}
-                    Image
-                    {' '}
-                    {`(${totalGalleries})`}
+                    <ImageFillBlackSvg /> Image {`(${totalGalleries})`}
                   </>
-                )}
+                }
                 key="photo"
               >
                 {/* <div className="heading-tab">
@@ -702,19 +819,19 @@ class PerformerProfile extends PureComponent<IProps> {
                 </div>
               </TabPane>
               <TabPane
-                tab={(
+                tab={
                   <>
-                    <ShopSvg />
-                    {' '}
-                    Store
-                    {' '}
-                    {`(${totalProducts})`}
+                    <ShopSvg /> Store {`(${totalProducts})`}
                   </>
-                )}
+                }
                 key="store"
               >
                 <div className="heading-tab">
-                  <SearchPostBar searching={loadingPrd} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
+                  <SearchPostBar
+                    searching={loadingPrd}
+                    tab={tab}
+                    handleSearch={this.handleFilterSearch.bind(this)}
+                  />
                 </div>
                 <ScrollListProduct
                   items={products}
@@ -726,10 +843,9 @@ class PerformerProfile extends PureComponent<IProps> {
             </Tabs>
           </div>
         </div>
-        {performer
-          && performer?.welcomeVideoPath
-          && performer?.activateWelcomeVideo
-          && (
+        {performer &&
+          performer?.welcomeVideoPath &&
+          performer?.activateWelcomeVideo && (
             <Modal
               key="welcome-video"
               className="welcome-video"
@@ -755,20 +871,21 @@ class PerformerProfile extends PureComponent<IProps> {
                   onClick={this.handleViewWelcomeVideo.bind(this)}
                 >
                   Don&apos;t show this again
-                </Button>
+                </Button>,
               ]}
             >
-              <VideoPlayer {...{
-                key: `${performer._id}`,
-                controls: true,
-                playsinline: true,
-                sources: [
-                  {
-                    src: performer?.welcomeVideoPath,
-                    type: 'video/mp4'
-                  }
-                ]
-              }}
+              <VideoPlayer
+                {...{
+                  key: `${performer._id}`,
+                  controls: true,
+                  playsinline: true,
+                  sources: [
+                    {
+                      src: performer?.welcomeVideoPath,
+                      type: "video/mp4",
+                    },
+                  ],
+                }}
               />
             </Modal>
           )}
@@ -801,13 +918,15 @@ class PerformerProfile extends PureComponent<IProps> {
           destroyOnClose
         >
           <ConfirmSubscriptionPerformerForm
-            type={subscriptionType || 'monthly'}
+            type={subscriptionType || "monthly"}
             performer={performer}
             submiting={submiting}
             onFinish={this.subscribe.bind(this)}
           />
         </Modal>
-        {submiting && <Loader customText="We are processing your payment, please do not reload this page until it's done." />}
+        {submiting && (
+          <Loader customText="We are processing your payment, please do not reload this page until it's done." />
+        )}
       </Layout>
     );
   }
@@ -820,7 +939,7 @@ const mapStates = (state: any) => ({
   productState: { ...state.product.products },
   galleryState: { ...state.gallery.galleries },
   user: { ...state.user.current },
-  settings: { ...state.settings }
+  settings: { ...state.settings },
 });
 
 const mapDispatch = {
@@ -833,6 +952,6 @@ const mapDispatch = {
   getGalleries,
   moreGalleries,
   removeFeedSuccess,
-  updateBalance
+  updateBalance,
 };
 export default connect(mapStates, mapDispatch)(PerformerProfile);

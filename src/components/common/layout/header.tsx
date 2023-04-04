@@ -166,7 +166,6 @@ class Header extends PureComponent<IProps> {
   render() {
     const { user, router, ui, settings, config } = this.props;
     const { totalNotReadMessage, openProfile } = this.state;
-
     return (
       <div>
         <div className="main-header">

@@ -1,4 +1,4 @@
-@import '../../../style/vars.less';
+@import "../../../style/vars.less";
 
 .top-profile {
   position: relative;
@@ -32,7 +32,6 @@
       &.secondary {
         background: @white;
       }
-
     }
   }
 
@@ -55,7 +54,7 @@
     bottom: -30px;
 
     .ant-upload-select.ant-upload-select-picture-card {
-      background-image: url('/static/no-avatar.png');
+      background-image: url("/static/no-avatar.png");
     }
   }
 
@@ -83,9 +82,11 @@
   width: 100%;
   height: 100%;
   position: relative;
-  background: linear-gradient(180deg,
-      rgba(66, 66, 66, 0.3) 50%,
-      rgba(255, 255, 255, 0.5) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(66, 66, 66, 0.3) 50%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
 
   .drop-actions {
     position: absolute;
@@ -113,7 +114,7 @@
         font-size: 14px;
         font-weight: 500;
         line-height: 23px;
-        color: #65676B;
+        color: #65676b;
       }
 
       .tab-item-bold {
@@ -128,7 +129,6 @@
 
   @media screen and (max-width: @tablet-screen) {
     margin-top: -20px;
-
   }
 
   @media screen and (max-width: @mobile-screen) {
@@ -139,10 +139,7 @@
     .tab-stat-custom {
       margin-top: 120px;
     }
-
   }
-
-
 }
 
 .fl-col {
@@ -201,7 +198,7 @@
     }
 
     h5 {
-      color: #65676B;
+      color: #65676b;
       font-size: 12px;
       // font-weight: 600;
       margin: 0;
@@ -228,7 +225,7 @@
   .cover-upload {
     position: absolute;
     top: 5px;
-    right: 5px
+    right: 5px;
   }
 
   @media screen and (max-width: @tablet-screen) {
@@ -251,7 +248,6 @@
 
   @media screen and (max-width: @mobile-screen) {
     display: block;
-
   }
 }
 
@@ -267,7 +263,7 @@
     color: #222222;
     font-weight: 500;
     background-color: transparent;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #cccccc;
     position: relative;
     width: 48px;
     height: 48px;
@@ -300,7 +296,7 @@
       font-size: 12px;
       font-weight: 500;
       line-height: 16px;
-      border: 1px solid #CCCCCC;
+      border: 1px solid #cccccc;
       border-radius: 8px;
       padding: 10px 20px;
       width: auto;
@@ -308,7 +304,7 @@
     }
 
     &.custom {
-      background-color: #FF5864;
+      background-color: #ff5864;
       color: #fff;
       font-size: 12px;
       font-weight: 500;
@@ -320,7 +316,6 @@
       border: none;
     }
   }
-
 
   @media screen and (max-width: @tablet-screen) {
     margin-top: -52px;
@@ -386,7 +381,6 @@
     color: @black;
     margin-bottom: 12px;
     cursor: pointer;
-
   }
 
   .location {
@@ -415,7 +409,6 @@
     height: 50px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-
   }
 
   .performer-info {
@@ -442,7 +435,6 @@
 }
 
 .model-content {
-
   .ant-tabs {
     .ant-tabs-tab.ant-tabs-tab-active {
       border-bottom: none !important;
@@ -461,7 +453,7 @@
       }
 
       .ant-tabs-tab {
-        background: #F7F9FA;
+        background: #f7f9fa;
         width: 25%;
         margin-right: 16px !important;
         font-size: 15px;
@@ -519,7 +511,6 @@
 
     .ant-tabs-nav-list {
       justify-content: space-around;
-
     }
 
     .ant-tabs-content-holder {
@@ -789,7 +780,6 @@
     font-weight: 700;
     line-height: 20px;
     padding: 5px;
-    background-color: rgba(0, 0, 0, .25);
 
     .name {
       display: inline-flex;
@@ -802,7 +792,7 @@
       text-transform: capitalize;
 
       img {
-        margin-left: 5px
+        margin-left: 5px;
       }
     }
 
@@ -832,7 +822,7 @@
     font-size: 20px;
 
     &.active {
-      color: #FF5864;
+      color: #ff5864;
     }
   }
 
@@ -874,9 +864,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  margin-bottom: 38px;
+  border-radius: 8px;
+  margin-bottom: 12px;
 
   .card-stat {
     width: 100%;
@@ -938,7 +927,7 @@
     font-size: 25px;
 
     &.active {
-      color: #FF5864;
+      color: #ff5864;
     }
   }
 
@@ -948,8 +937,12 @@
     left: 0;
     width: 100%;
     color: @white;
-    background: linear-gradient(225deg, #FD297B 0%, #FF5864 52.6%, #FF655B 100%);
-    ;
+    background: linear-gradient(
+      225deg,
+      #fd297b 0%,
+      #ff5864 52.6%,
+      #ff655b 100%
+    );
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 7px;
@@ -990,10 +983,7 @@
   @media screen and (max-width: @mobile-screen) {
     height: 225px;
   }
-
-
 }
-
 
 .grid-table {
   .ant-col {
@@ -1038,7 +1028,7 @@
         position: relative;
 
         &::after {
-          content: '';
+          content: "";
           border-bottom: 2px solid;
           width: 20px;
           height: 0;
@@ -1129,7 +1119,6 @@
     }
 
     .ant-carousel {
-
       .slick-prev {
         right: 32px;
       }
@@ -1153,7 +1142,11 @@
   display: flex;
   color: @white;
   align-items: center;
-  background-image: linear-gradient(to top, #04040e00 0%, rgba(60, 60, 60, .5) 100%);
+  background-image: linear-gradient(
+    to top,
+    #04040e00 0%,
+    rgba(60, 60, 60, 0.5) 100%
+  );
 
   .arrow-back {
     font-size: 22px;
@@ -1181,7 +1174,12 @@
 
   button {
     width: 70%;
-    background-image: linear-gradient(-90deg, #FD297B 0%, #FF5864 52.6%, #FF655B 100%);
+    background-image: linear-gradient(
+      -90deg,
+      #fd297b 0%,
+      #ff5864 52.6%,
+      #ff655b 100%
+    );
     border: none;
     padding: 13px 21px;
     color: @white;
@@ -1192,7 +1190,7 @@
   }
 
   .btn-year {
-    background: #9D4EDD;
+    background: #9d4edd;
   }
 
   @media screen and (max-width: @mobile-screen) {
@@ -1245,5 +1243,40 @@
 
   .react-share__ShareButton {
     margin: 0 5px;
+  }
+}
+
+.model-container-new {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  position: absolute;
+  width: 100%;
+  top: 220px;
+  .model-image-new {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .model-name-new {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin: 6px 0;
+  }
+  .model-username-new {
+    font-family: Inter;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    display: flex;
   }
 }

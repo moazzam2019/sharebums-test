@@ -31,11 +31,12 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import Router from "next/router";
+import Router, { withRouter, Router as RouterEvent } from "next/router";
 import { debounce } from "lodash";
 import dynamic from "next/dynamic";
 import "./index.less";
 import { HomeIcon, ModelIcon, TickIcon } from "src/icons";
+import Sidebar from "@components/common/layout/sidebar";
 
 const StreamListItem = dynamic(
   () => import("@components/streaming/stream-list-item"),
@@ -54,6 +55,7 @@ interface IProps {
   moreFeeds: Function;
   feedState: any;
   removeFeedSuccess: Function;
+  router: any;
 }
 
 // function isInViewport(el) {
@@ -227,8 +229,16 @@ class HomePage extends PureComponent<IProps> {
   }
 
   render() {
-    const { ui, feedState, user, settings, banners, countries, streams } =
-      this.props;
+    const {
+      ui,
+      feedState,
+      user,
+      settings,
+      banners,
+      countries,
+      streams,
+      router,
+    } = this.props;
     const {
       items: feeds,
       total: totalFeeds,
@@ -276,65 +286,7 @@ class HomePage extends PureComponent<IProps> {
               </div> */}
               <div className="home-container">
                 <div className="left-container">
-                  {/* Top Icons */}
-                  <div className="icons">
-                    <Link href="/home">
-                      <a>
-                        <div className="full-icon">
-                          <div className="icon">
-                            <HomeIcon />
-                          </div>
-                          <div className="icon-name">Home</div>
-                        </div>
-                      </a>
-                    </Link>
-                    <Link href="/model">
-                      <a>
-                        <div className="full-icon">
-                          <div className="icon">
-                            <ModelIcon />
-                          </div>
-                          <div className="icon-name">Models</div>
-                        </div>
-                      </a>
-                    </Link>
-                  </div>
-                  {/* Active Users */}
-                  <div className="fans-main">
-                    <div>Chat with active Fans</div>
-                    <div className="active-fans-main">
-                      <img
-                        src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000"
-                        alt=""
-                      />
-                      <div>
-                        <span className="active-fan-name">Name</span>
-                        <br />
-                        <span className="active-fan-username">@name</span>
-                      </div>
-                      <div className="tick-icon">
-                        <TickIcon />
-                      </div>
-                    </div>
-                  </div>
-                  {/* Your Followers */}
-                  <div className="followers-main">
-                    <div>Your Followers</div>
-                    <div className="active-fans-main">
-                      <img
-                        src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000"
-                        alt=""
-                      />
-                      <div>
-                        <span className="active-fan-name">Name</span>
-                        <br />
-                        <span className="active-fan-username">@name</span>
-                      </div>
-                      <div className="tick-icon">
-                        <TickIcon />
-                      </div>
-                    </div>
-                  </div>{" "}
+                  <Sidebar />
                 </div>
                 <div className="right-container">
                   {user._id &&
@@ -465,4 +417,5 @@ const mapDispatch = {
   moreFeeds,
   removeFeedSuccess,
 };
-export default connect(mapStates, mapDispatch)(HomePage);
+
+export default withRouter(connect(mapStates, mapDispatch)(HomePage)) as any;

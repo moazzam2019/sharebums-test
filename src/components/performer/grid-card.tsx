@@ -1,13 +1,13 @@
-import { PureComponent } from 'react';
-import { ICountry, IPerformer, IUser } from 'src/interfaces';
-import Link from 'next/link';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { TickWhiteSvg } from 'src/icons';
-import { connect } from 'react-redux';
-import { message, Tooltip } from 'antd';
-import Router from 'next/router';
-import { followService } from 'src/services';
-import './performer.less';
+import { PureComponent } from "react";
+import { ICountry, IPerformer, IUser } from "src/interfaces";
+import Link from "next/link";
+import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { TickSvgNew } from "src/icons";
+import { connect } from "react-redux";
+import { message, Tooltip } from "antd";
+import Router from "next/router";
+import { followService } from "src/services";
+import "./performer.less";
 
 interface IProps {
   performer: IPerformer;
@@ -18,8 +18,8 @@ interface IProps {
 class PerformerGridCard extends PureComponent<IProps> {
   state = {
     isFollowed: false,
-    requesting: false
-  }
+    requesting: false,
+  };
 
   componentDidMount(): void {
     const { performer } = this.props;
@@ -30,7 +30,7 @@ class PerformerGridCard extends PureComponent<IProps> {
     const { performer, user } = this.props;
     const { isFollowed, requesting } = this.state;
     if (!user._id) {
-      message.error('Please log in or register!');
+      message.error("Please log in or register!");
       return;
     }
     if (requesting || user.isPerformer) return;
@@ -45,47 +45,84 @@ class PerformerGridCard extends PureComponent<IProps> {
       }
     } catch (e) {
       const error = await e;
-      message.error(error.message || 'Error occured, please try again later');
+      message.error(error.message || "Error occured, please try again later");
       this.setState({ requesting: false });
     }
-  }
+  };
 
   handleJoinStream = (e) => {
     e.preventDefault();
     const { user, performer } = this.props;
     if (!user._id) {
-      message.error('Please log in or register!');
+      message.error("Please log in or register!");
       return;
     }
     if (user.isPerformer) return;
     if (!performer?.isSubscribed) {
-      message.error('Please subscribe to this model!');
+      message.error("Please subscribe to this model!");
       return;
     }
-    Router.push({
-      pathname: '/streaming/details',
-      query: {
-        performer: JSON.stringify(performer),
-        username: performer?.username || performer?._id
-      }
-    }, `/streaming/${performer?.username || performer?._id}`);
-  }
+    Router.push(
+      {
+        pathname: "/streaming/details",
+        query: {
+          performer: JSON.stringify(performer),
+          username: performer?.username || performer?._id,
+        },
+      },
+      `/streaming/${performer?.username || performer?._id}`
+    );
+  };
 
   render() {
     const { performer, user } = this.props;
     const { isFollowed } = this.state;
+    console.log(user, performer);
 
     return (
-      <div className="grid-card" style={{ backgroundImage: `url(${performer?.avatar || '/static/no-avatar.png'})` }}>
-        {/* {performer?.isFreeSubscription && <span className="free-status">Free</span>} */}
-        <span className={performer?.isOnline > 0 ? 'online-status active' : 'online-status'} />
-        {performer?.live > 0 && <div className="live-status">Live</div>}
-        {!user?.isPerformer && (
-        <a aria-hidden onClick={() => this.handleFollow()} className={!isFollowed ? 'follow-btn' : 'follow-btn active'}>
-          {isFollowed ? <Tooltip title="Following"><HeartFilled /></Tooltip> : <Tooltip title="Follow"><HeartOutlined /></Tooltip>}
-        </a>
-        )}
-        {/* <div className="card-stat">
+      <Link
+        href={{
+          pathname: "/model/profile",
+          query: { username: performer?.username || performer?._id },
+        }}
+        as={`/${performer?.username || performer?._id}`}
+      >
+        <a>
+          <div
+            className="grid-card"
+            style={{
+              backgroundImage: `url(${
+                performer?.avatar || "/static/no-avatar.png"
+              })`,
+            }}
+          >
+            {/* {performer?.isFreeSubscription && <span className="free-status">Free</span>} */}
+            <span
+              className={
+                performer?.isOnline > 0
+                  ? "online-status active"
+                  : "online-status"
+              }
+            />
+            {performer?.live > 0 && <div className="live-status">Live</div>}
+            {/* {!user?.isPerformer && (
+          <a
+            aria-hidden
+            onClick={() => this.handleFollow()}
+            className={!isFollowed ? "follow-btn" : "follow-btn active"}
+          >
+            {isFollowed ? (
+              <Tooltip title="Following">
+                <HeartFilled />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Follow">
+                <HeartOutlined />
+              </Tooltip>
+            )}
+          </a>
+        )} */}
+            {/* <div className="card-stat">
           <span>
             {shortenLargeNumber(performer?.score || 0)}
             {' '}
@@ -97,23 +134,28 @@ class PerformerGridCard extends PureComponent<IProps> {
           </span>
           )}
         </div> */}
-        <Link
-          href={{
-            pathname: '/model/profile',
-            query: { username: performer?.username || performer?._id }
-          }}
-          as={`/${performer?.username || performer?._id}`}
-        >
-          <a>
-            <div className="model-name">
-              {performer?.name || performer?.username || 'N/A'}
-              {' '}
-              {performer?.verifiedAccount && <TickWhiteSvg />}
-            </div>
 
-          </a>
-        </Link>
-      </div>
+            <div className="model-container-new">
+              {performer.avatar && (
+                <img
+                  src={performer.avatar}
+                  alt={performer?.name}
+                  className="model-image-new"
+                />
+              )}
+              <div className="model-name-new">{performer?.name || "N/A"}</div>
+              <div className="model-username-new">
+                <span style={{ marginRight: "3px" }}>
+                  @{performer?.username || "N/A"}{" "}
+                </span>
+                <span style={{ paddingTop: "1px" }}>
+                  {performer?.verifiedAccount && <TickSvgNew />}
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </Link>
     );
   }
 }
