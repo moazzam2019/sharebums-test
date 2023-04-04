@@ -113,7 +113,6 @@ class Performers extends PureComponent<IProps> {
     const { ui, countries, bodyInfo } = this.props;
     const { limit, offset, performers, fetching, total, activeButton } =
       this.state;
-    console.log(countries, bodyInfo);
     return (
       <Layout>
         <Head>

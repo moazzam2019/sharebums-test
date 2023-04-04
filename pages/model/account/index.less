@@ -1,0 +1,75 @@
+.main-account-body {
+  background: #16182305;
+  margin-top: -60px;
+}
+
+.account-main-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  .left-arrow-icon {
+    position: absolute;
+    top: 4%;
+    left: -7%;
+    background: #16182305;
+    padding: 15px 18px 15px 18px;
+    border-radius: 50%;
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover::before {
+      content: "Back to Home";
+      display: block;
+      position: absolute;
+      top: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  }
+  .account-left-container {
+    display: flex;
+    flex-direction: column;
+    height: 976px;
+    width: 31%;
+    border-radius: 12px;
+    background-color: white;
+    margin-top: 20px;
+    .account-menu-item {
+      padding: 22px 10px 18px 30px;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 27px;
+      letter-spacing: 0.02em;
+      text-align: left;
+      color: #161616;
+      display: flex;
+      &:hover {
+        background: #16182305;
+        cursor: pointer;
+        border: 5px solid white;
+        border-radius: 12px;
+        padding: 17px 5px 13px 25px;
+      }
+    }
+    .selected-menu-item {
+      background: #16182305;
+      border: 5px solid white;
+      border-radius: 12px;
+      padding: 17px 5px 13px 25px;
+    }
+  }
+  .account-right-container {
+    margin-top: 20px;
+    border-radius: 12px;
+    background-color: white;
+    width: 67%;
+    padding: 22px 10px 18px 30px;
+  }
+}

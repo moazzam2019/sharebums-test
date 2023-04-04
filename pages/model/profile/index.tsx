@@ -54,6 +54,7 @@ import Router from "next/router";
 import Error from "next/error";
 import "@components/performer/performer.less";
 import moment from "moment";
+import "./index.less";
 
 interface IProps {
   ui: IUIConfig;
@@ -551,174 +552,191 @@ class PerformerProfile extends PureComponent<IProps> {
           <meta name="twitter:description" content={performer?.bio} />
         </Head>
         <div className="main-container">
-          <Sidebar />
-          <div
-            className="top-profile"
-            style={{
-              backgroundImage: `url('${
-                performer?.cover || "/static/banner-image.jpg"
-              }')`,
-            }}
-          >
-            {user.isPerformer && !performer?.cover && (
-              <div className="add-image">
-                <Link href="/model/account">
-                  <Button className="secondary">
-                    <CameraFillSvg /> <span>Add header image</span>
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="main-profile">
-          <div className="main-container">
-            <div className="fl-col">
-              <Image
-                alt="main-avt"
-                src={performer?.avatar || "/static/no-avatar.png"}
-                fallback="/static/no-avatar.png"
-              />
-              {user?._id !== performer?._id && (
-                <span
-                  className={
-                    performer?.isOnline > 0
-                      ? "online-status"
-                      : "online-status off"
-                  }
-                />
-              )}
-              <div className="m-user-name">
-                <h4>
-                  {performer?.name || "N/A"}
-                  &nbsp;
-                  {performer?.verifiedAccount && <TickIcon />}
-                  &nbsp;
-                  {performer?.live > 0 && user?._id !== performer?._id && (
-                    <a
-                      aria-hidden
-                      onClick={this.handleJoinStream}
-                      className="live-status"
-                    >
-                      Live
-                    </a>
-                  )}
-                  {user?._id === performer?._id && (
-                    <Link href="/model/account">
-                      <a>
-                        <EditOutlined className="primary-color" />
-                      </a>
-                    </Link>
-                  )}
-                </h4>
-                <h5 style={{ textTransform: "none" }}>
-                  @{performer?.username || "n/a"}
-                </h5>
-                {performer?.offlineAt ? (
-                  <h5 style={{ textTransform: "none" }}>
-                    Last seen {moment(performer?.offlineAt).fromNow()}
-                  </h5>
-                ) : (
-                  <div style={{ minHeight: "23px" }} />
-                )}
-              </div>
+          <div className="profile-main-container">
+            <div className="profile-left-container">
+              <Sidebar />
             </div>
-            <div className="btn-grp">
-              {!user.isPerformer && (
-                <>
-                  <Tooltip title="Send Message">
-                    <Button
-                      disabled={!user._id || user.isPerformer}
-                      onClick={() =>
-                        Router.push({
-                          pathname: "/messages",
-                          query: {
-                            toSource: "performer",
-                            toId: performer?._id || "",
-                          },
-                        })
-                      }
-                    >
-                      <MessageIcon />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Send Tip">
-                    <Button
-                      disabled={!user._id || user.isPerformer}
-                      onClick={() => this.setState({ openTipModal: true })}
-                    >
-                      <DollarSvg />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="">
-                    <Button
-                      disabled={!user._id || user.isPerformer}
-                      className={isFollowed ? "active" : "custom"}
-                      onClick={() => this.handleFollow()}
-                    >
-                      {isFollowed ? "Following" : "Follow"}
-                    </Button>
-                  </Tooltip>
-                </>
-              )}
-            </div>
-            <div className="tab-stat-custom">
-              <div className="tab-item-custom">
-                <span>
-                  <b className="tab-item-bold">
-                    {shortenLargeNumber(performer?.stats?.subscribers || 0)}
-                  </b>{" "}
-                  Followers
-                </span>
-              </div>
-              <div className="tab-item-custom">
-                <span>
-                  <b className="tab-item-bold">
-                    {shortenLargeNumber(totalFeed || 0)}
-                  </b>{" "}
-                  Posts
-                </span>
-              </div>
-            </div>
-            <div className={user.isPerformer ? "mar-0 pro-desc" : "pro-desc"}>
-              <PerformerInfo countries={countries} performer={performer} />
-            </div>
-            {!performer?.isSubscribed && !user.isPerformer && (
-              <div className="subscription-bl">
-                <button
-                  type="button"
-                  className="sub-btn"
-                  disabled={submiting}
-                  onClick={() => {
-                    this.setState({
-                      openSubscriptionModal: true,
-                      subscriptionType: "monthly",
-                    });
+            <div className="profile-right-container">
+              <div className="main-container">
+                <div
+                  className="top-profile"
+                  style={{
+                    backgroundImage: `url('${
+                      performer?.cover || "/static/banner-image.jpg"
+                    }')`,
                   }}
                 >
-                  SUBSCRIBE FOR{" "}
-                  {performer && performer?.monthlyPrice.toFixed(2)} $ PER MONTH
-                </button>
+                  {user.isPerformer && !performer?.cover && (
+                    <div className="add-image">
+                      <Link href="/model/account">
+                        <Button className="secondary">
+                          <CameraFillSvg /> <span>Add header image</span>
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-            {!performer?.isSubscribed && !user.isPerformer && (
-              <div className="subscription-bl subscription-bl-year">
-                <button
-                  type="button"
-                  className="sub-btn btn-year"
-                  disabled={submiting}
-                  onClick={() => {
-                    this.setState({
-                      openSubscriptionModal: true,
-                      subscriptionType: "yearly",
-                    });
-                  }}
-                >
-                  SUBSCRIBE FOR {performer?.yearlyPrice.toFixed(2)} $ PER YEAR
-                </button>
-              </div>
-            )}
-            {/* {performer?.isFreeSubscription && !performer?.isSubscribed && !user.isPerformer && (
+              <div className="main-profile">
+                <div className="main-container">
+                  <div className="fl-col">
+                    <Image
+                      alt="main-avt"
+                      src={performer?.avatar || "/static/no-avatar.png"}
+                      fallback="/static/no-avatar.png"
+                    />
+                    {user?._id !== performer?._id && (
+                      <span
+                        className={
+                          performer?.isOnline > 0
+                            ? "online-status"
+                            : "online-status off"
+                        }
+                      />
+                    )}
+                    <div className="m-user-name">
+                      <h4>
+                        {performer?.name || "N/A"}
+                        &nbsp;
+                        {performer?.verifiedAccount && <TickIcon />}
+                        &nbsp;
+                        {performer?.live > 0 &&
+                          user?._id !== performer?._id && (
+                            <a
+                              aria-hidden
+                              onClick={this.handleJoinStream}
+                              className="live-status"
+                            >
+                              Live
+                            </a>
+                          )}
+                        {user?._id === performer?._id && (
+                          <Link href="/model/account">
+                            <a>
+                              <EditOutlined className="primary-color" />
+                            </a>
+                          </Link>
+                        )}
+                      </h4>
+                      <h5 style={{ textTransform: "none" }}>
+                        @{performer?.username || "n/a"}
+                      </h5>
+                      {performer?.offlineAt ? (
+                        <h5 style={{ textTransform: "none" }}>
+                          Last seen {moment(performer?.offlineAt).fromNow()}
+                        </h5>
+                      ) : (
+                        <div style={{ minHeight: "23px" }} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="btn-grp">
+                    {!user.isPerformer && (
+                      <>
+                        <Tooltip title="Send Message">
+                          <Button
+                            disabled={!user._id || user.isPerformer}
+                            onClick={() =>
+                              Router.push({
+                                pathname: "/messages",
+                                query: {
+                                  toSource: "performer",
+                                  toId: performer?._id || "",
+                                },
+                              })
+                            }
+                          >
+                            <MessageIcon />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Send Tip">
+                          <Button
+                            disabled={!user._id || user.isPerformer}
+                            onClick={() =>
+                              this.setState({ openTipModal: true })
+                            }
+                          >
+                            <DollarSvg />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="">
+                          <Button
+                            disabled={!user._id || user.isPerformer}
+                            className={isFollowed ? "active" : "custom"}
+                            onClick={() => this.handleFollow()}
+                          >
+                            {isFollowed ? "Following" : "Follow"}
+                          </Button>
+                        </Tooltip>
+                      </>
+                    )}
+                  </div>
+                  <div className="tab-stat-custom">
+                    <div className="tab-item-custom">
+                      <span>
+                        <b className="tab-item-bold">
+                          {shortenLargeNumber(
+                            performer?.stats?.subscribers || 0
+                          )}
+                        </b>{" "}
+                        Followers
+                      </span>
+                    </div>
+                    <div className="tab-item-custom">
+                      <span>
+                        <b className="tab-item-bold">
+                          {shortenLargeNumber(totalFeed || 0)}
+                        </b>{" "}
+                        Posts
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    className={user.isPerformer ? "mar-0 pro-desc" : "pro-desc"}
+                  >
+                    <PerformerInfo
+                      countries={countries}
+                      performer={performer}
+                    />
+                  </div>
+                  {!performer?.isSubscribed && !user.isPerformer && (
+                    <div className="subscription-bl">
+                      <button
+                        type="button"
+                        className="sub-btn"
+                        disabled={submiting}
+                        onClick={() => {
+                          this.setState({
+                            openSubscriptionModal: true,
+                            subscriptionType: "monthly",
+                          });
+                        }}
+                      >
+                        SUBSCRIBE FOR{" "}
+                        {performer && performer?.monthlyPrice.toFixed(2)} $ PER
+                        MONTH
+                      </button>
+                    </div>
+                  )}
+                  {!performer?.isSubscribed && !user.isPerformer && (
+                    <div className="subscription-bl subscription-bl-year">
+                      <button
+                        type="button"
+                        className="sub-btn btn-year"
+                        disabled={submiting}
+                        onClick={() => {
+                          this.setState({
+                            openSubscriptionModal: true,
+                            subscriptionType: "yearly",
+                          });
+                        }}
+                      >
+                        SUBSCRIBE FOR {performer?.yearlyPrice.toFixed(2)} $ PER
+                        YEAR
+                      </button>
+                    </div>
+                  )}
+                  {/* {performer?.isFreeSubscription && !performer?.isSubscribed && !user.isPerformer && (
               <div className="subscription-bl">
                 <button
                   type="button"
@@ -737,110 +755,117 @@ class PerformerProfile extends PureComponent<IProps> {
                 </button>
               </div>
             )} */}
-          </div>
-        </div>
-        <div style={{ marginTop: "20px" }} />
-        <div className="main-container">
-          <div className="model-content">
-            <Tabs
-              defaultActiveKey="post"
-              size="large"
-              onTabClick={(t: string) => {
-                this.setState(
-                  { tab: t, filter: initialFilter, isGrid: true },
-                  () => this.loadItems()
-                );
-              }}
-            >
-              <TabPane
-                tab={
-                  <>
-                    <FeedFillSvg /> All
-                  </>
-                }
-                key="post"
-              >
-                {/* <div className="heading-tab">
+                </div>
+              </div>
+              <div style={{ marginTop: "20px" }} />
+              <div className="main-container">
+                <div className="model-content">
+                  <Tabs
+                    defaultActiveKey="post"
+                    size="large"
+                    onTabClick={(t: string) => {
+                      this.setState(
+                        { tab: t, filter: initialFilter, isGrid: true },
+                        () => this.loadItems()
+                      );
+                    }}
+                  >
+                    <TabPane
+                      tab={
+                        <>
+                          <FeedFillSvg /> All
+                        </>
+                      }
+                      key="post"
+                    >
+                      {/* <div className="heading-tab">
                   <SearchPostBar searching={loadingFeed} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
                 </div> */}
-                <div
-                  className={
-                    isGrid ? "main-container" : "main-container custom"
-                  }
-                >
-                  <ScrollListFeed
-                    items={feeds}
-                    loading={loadingFeed}
-                    canLoadmore={feeds && feeds.length < totalFeed}
-                    loadMore={this.loadMoreItem.bind(this)}
-                    isGrid={isGrid}
-                    onDelete={this.handleDeleteFeed.bind(this)}
-                  />
-                </div>
-              </TabPane>
-              <TabPane
-                tab={
-                  <>
-                    <VideoFillSvg /> Video {`(${totalVideos})`}
-                  </>
-                }
-                key="video"
-              >
-                {/* <div className="heading-tab">
+                      <div
+                        className={
+                          isGrid ? "main-container" : "main-container custom"
+                        }
+                      >
+                        <ScrollListFeed
+                          items={feeds}
+                          loading={loadingFeed}
+                          canLoadmore={feeds && feeds.length < totalFeed}
+                          loadMore={this.loadMoreItem.bind(this)}
+                          isGrid={isGrid}
+                          onDelete={this.handleDeleteFeed.bind(this)}
+                        />
+                      </div>
+                    </TabPane>
+                    <TabPane
+                      tab={
+                        <>
+                          <VideoFillSvg /> Video {`(${totalVideos})`}
+                        </>
+                      }
+                      key="video"
+                    >
+                      {/* <div className="heading-tab">
                   <SearchPostBar searching={loadingVideo} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
                 </div> */}
-                <div className="main-container">
-                  <ScrollListVideo
-                    items={videos}
-                    loading={loadingVideo}
-                    canLoadmore={videos && videos.length < totalVideos}
-                    loadMore={this.loadMoreItem.bind(this)}
-                  />
-                </div>
-              </TabPane>
-              <TabPane
-                tab={
-                  <>
-                    <ImageFillBlackSvg /> Image {`(${totalGalleries})`}
-                  </>
-                }
-                key="photo"
-              >
-                {/* <div className="heading-tab">
+                      <div className="main-container">
+                        <ScrollListVideo
+                          items={videos}
+                          loading={loadingVideo}
+                          canLoadmore={videos && videos.length < totalVideos}
+                          loadMore={this.loadMoreItem.bind(this)}
+                        />
+                      </div>
+                    </TabPane>
+                    <TabPane
+                      tab={
+                        <>
+                          <ImageFillBlackSvg /> Image {`(${totalGalleries})`}
+                        </>
+                      }
+                      key="photo"
+                    >
+                      {/* <div className="heading-tab">
                   <SearchPostBar searching={loadingGallery} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
                 </div> */}
-                <div className="main-container">
-                  <ScrollListGallery
-                    items={galleries}
-                    loading={loadingGallery}
-                    canLoadmore={galleries && galleries.length < totalGalleries}
-                    loadMore={this.loadMoreItem.bind(this)}
-                  />
+                      <div className="main-container">
+                        <ScrollListGallery
+                          items={galleries}
+                          loading={loadingGallery}
+                          canLoadmore={
+                            galleries && galleries.length < totalGalleries
+                          }
+                          loadMore={this.loadMoreItem.bind(this)}
+                        />
+                      </div>
+                    </TabPane>
+                    <TabPane
+                      tab={
+                        <>
+                          <ShopSvg /> Store {`(${totalProducts})`}
+                        </>
+                      }
+                      key="store"
+                    >
+                      <div className="heading-tab">
+                        <SearchPostBar
+                          searching={loadingPrd}
+                          tab={tab}
+                          handleSearch={this.handleFilterSearch.bind(this)}
+                        />
+                      </div>
+                      <ScrollListProduct
+                        items={products}
+                        loading={loadingPrd}
+                        canLoadmore={
+                          products && products.length < totalProducts
+                        }
+                        loadMore={this.loadMoreItem.bind(this)}
+                      />
+                    </TabPane>
+                  </Tabs>
                 </div>
-              </TabPane>
-              <TabPane
-                tab={
-                  <>
-                    <ShopSvg /> Store {`(${totalProducts})`}
-                  </>
-                }
-                key="store"
-              >
-                <div className="heading-tab">
-                  <SearchPostBar
-                    searching={loadingPrd}
-                    tab={tab}
-                    handleSearch={this.handleFilterSearch.bind(this)}
-                  />
-                </div>
-                <ScrollListProduct
-                  items={products}
-                  loading={loadingPrd}
-                  canLoadmore={products && products.length < totalProducts}
-                  loadMore={this.loadMoreItem.bind(this)}
-                />
-              </TabPane>
-            </Tabs>
+              </div>
+            </div>
           </div>
         </div>
         {performer &&
