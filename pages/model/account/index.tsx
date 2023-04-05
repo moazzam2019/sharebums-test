@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { Tabs, message, Layout } from "antd";
 import { IPerformer, IUIConfig, ICountry, IBody } from "src/interfaces";
+import BlockCountries from "../block-countries";
 import {
   updatePerformer,
   updateCurrentUserAvatar,
@@ -149,6 +150,7 @@ class AccountSettings extends PureComponent<IProps> {
   render() {
     const { currentUser, updating, ui, countries, bodyInfo } = this.props;
     const { emailSending, countTime, menuItem } = this.state;
+    console.log(this.props);
     const uploadHeaders = {
       authorization: authService.getToken(),
     };
@@ -255,8 +257,75 @@ class AccountSettings extends PureComponent<IProps> {
               </div>
             </div>
             <div className="account-right-container">
-              {" "}
-              <div>Hello</div>
+              {menuItem === "appearance" && (
+                <>
+                  <div className="account-menu-title">Appearance</div>
+                  <div className="account-menu-description">
+                    This is where you can edit your profile & add a introduction
+                    video.
+                  </div>
+                </>
+              )}
+              {menuItem === "account" && (
+                <>
+                  <div className="account-menu-title">
+                    Personal Information & Account
+                  </div>
+                  <div className="account-menu-description">
+                    This is where you can manage your personal information and
+                    account. Your personal information will never be shared or
+                    published anywhere. It is only for verifying that you are
+                    you and of legal age.
+                  </div>
+                </>
+              )}
+              {menuItem === "pricing" && (
+                <>
+                  <div className="account-menu-title">Pricing Settings</div>
+                  <div className="account-menu-description">
+                    This is where you can set your monthly subscription price.
+                  </div>
+                </>
+              )}
+              {menuItem === "iddocuments" && (
+                <>
+                  <div className="account-menu-title">ID Documents</div>
+                  <div className="account-menu-description">
+                    This will never be shared and is only for verifying purposes
+                    and to make sure you are of legal age.
+                  </div>
+                </>
+              )}
+              {menuItem === "banking" && (
+                <>
+                  <div className="account-menu-title">Banking</div>
+                  <div className="account-menu-description">
+                    Set up preferred account where you would like your payouts
+                    to be deposited to:
+                  </div>
+                </>
+              )}
+              {menuItem === "blockcountries" && (
+                <>
+                  <div className="account-menu-title">Block Countries</div>
+                  <div className="account-menu-description">
+                    Block which countries you do not want getting access to your
+                    content.
+                  </div>
+                  <div>
+                    <BlockCountries countries={countries} />
+                  </div>
+                </>
+              )}
+              {menuItem === "blockaccounts" && (
+                <>
+                  <div className="account-menu-title">Block Fans</div>
+                  <div className="account-menu-description">
+                    This is where you can block fans that you don’t wish to have
+                    access to your profile anymore.
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <Tabs

@@ -286,17 +286,17 @@ class Header extends PureComponent<IProps> {
                     </div>
                   )}
                   {!user._id && [
-                    <li key="logo" className="logo-nav">
-                      <Link href="/home">
-                        <a>
-                          {ui.logo ? (
-                            <img src={ui.logo} alt="logo" />
-                          ) : (
-                            `${ui.siteName}`
-                          )}
-                        </a>
-                      </Link>
-                    </li>,
+                    // <li key="logo" className="logo-nav">
+                    //   <Link href="/home">
+                    //     <a>
+                    //       {ui.logo ? (
+                    //         <img src={ui.logo} alt="logo" />
+                    //       ) : (
+                    //         `${ui.siteName}`
+                    //       )}
+                    //     </a>
+                    //   </Link>
+                    // </li>,
                     <li
                       key="login"
                       className={router.pathname === "/" ? "active" : ""}
