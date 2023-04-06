@@ -294,6 +294,9 @@ class AccountSettings extends PureComponent<IProps> {
                     This will never be shared and is only for verifying purposes
                     and to make sure you are of legal age.
                   </div>
+                  <div>
+                    <PerformerVerificationForm user={currentUser} />
+                  </div>
                 </>
               )}
               {menuItem === "banking" && (

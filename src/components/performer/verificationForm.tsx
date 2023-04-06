@@ -1,15 +1,13 @@
-import { PureComponent } from 'react';
-import {
-  Form, Button, Row, Col, message, Image
-} from 'antd';
-import { IPerformer } from 'src/interfaces';
-import { ImageUpload } from '@components/file';
-import { performerService, authService } from '@services/index';
-import './performer.less';
+import { PureComponent } from "react";
+import { Form, Button, Row, Col, message, Image } from "antd";
+import { IPerformer } from "src/interfaces";
+import { ImageUpload } from "@components/file";
+import { performerService, authService } from "@services/index";
+import "./performer.less";
 
 const layout = {
   labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  wrapperCol: { span: 24 },
 };
 
 interface IProps {
@@ -22,9 +20,9 @@ export class PerformerVerificationForm extends PureComponent<IProps> {
   documentVerificationFileId: string;
 
   state = {
-    idImage: '',
-    documentImage: ''
-  }
+    idImage: "",
+    documentImage: "",
+  };
 
   componentDidMount() {
     const { user } = this.props;
@@ -39,24 +37,22 @@ export class PerformerVerificationForm extends PureComponent<IProps> {
   }
 
   onFileUploaded(type, file) {
-    if (file && type === 'idFile') {
+    if (file && type === "idFile") {
       this.idVerificationFileId = file?.response?.data?._id;
       this.setState({ idImage: file?.response?.data.url });
     }
-    if (file && type === 'documentFile') {
+    if (file && type === "documentFile") {
       this.documentVerificationFileId = file?.response?.data?._id;
       this.setState({ documentImage: file?.response?.data.url });
     }
-    message.success('Photo has been uploaded!');
+    message.success("Photo has been uploaded!");
   }
 
   render() {
-    const {
-      idImage, documentImage
-    } = this.state;
+    const { idImage, documentImage } = this.state;
     const documentUploadUrl = performerService.getDocumentUploadUrl();
     const headers = {
-      authorization: authService.getToken()
+      authorization: authService.getToken(),
     };
     return (
       <Form
@@ -73,12 +69,30 @@ export class PerformerVerificationForm extends PureComponent<IProps> {
               className="model-photo-verification"
             >
               <div className="document-upload">
-                <ImageUpload accept="image/*" headers={headers} uploadUrl={`${documentUploadUrl}/idVerificationId`} onUploaded={this.onFileUploaded.bind(this, 'idFile')} />
+                <ImageUpload
+                  accept="image/*"
+                  headers={headers}
+                  uploadUrl={`${documentUploadUrl}/idVerificationId`}
+                  onUploaded={this.onFileUploaded.bind(this, "idFile")}
+                />
                 {idImage ? (
-                  <Image alt="id-img" src={idImage} style={{ height: '150px' }} />
-                ) : <img src="/static/front-id.png" height="150px" alt="id-img" />}
+                  <Image
+                    alt="id-img"
+                    src={idImage}
+                    style={{ height: "150px" }}
+                  />
+                ) : (
+                  <img
+                    src="../../../../static/front-id.png"
+                    height="150px"
+                    alt="id-img"
+                  />
+                )}
               </div>
-              <div className="ant-form-item-explain" style={{ textAlign: 'left' }}>
+              <div
+                className="ant-form-item-explain"
+                style={{ textAlign: "left" }}
+              >
                 <ul className="list-issued-id">
                   <li>Government-issued ID card</li>
                   <li>National Id card</li>
@@ -95,25 +109,42 @@ export class PerformerVerificationForm extends PureComponent<IProps> {
               className="model-photo-verification"
             >
               <div className="document-upload">
-                <ImageUpload accept="image/*" headers={headers} uploadUrl={`${documentUploadUrl}/documentVerificationId`} onUploaded={this.onFileUploaded.bind(this, 'documentFile')} />
+                <ImageUpload
+                  accept="image/*"
+                  headers={headers}
+                  uploadUrl={`${documentUploadUrl}/documentVerificationId`}
+                  onUploaded={this.onFileUploaded.bind(this, "documentFile")}
+                />
                 {documentImage ? (
-                  <Image alt="id-img" src={documentImage} style={{ height: '150px' }} />
-                ) : <img src="/static/holding-id.jpg" height="150px" alt="holding-id" />}
+                  <Image
+                    alt="id-img"
+                    src={documentImage}
+                    style={{ height: "150px" }}
+                  />
+                ) : (
+                  <img
+                    src="/static/holding-id.jpg"
+                    height="150px"
+                    alt="holding-id"
+                  />
+                )}
               </div>
-              <div className="ant-form-item-explain" style={{ textAlign: 'left' }}>
+              <div
+                className="ant-form-item-explain"
+                style={{ textAlign: "left" }}
+              >
                 <ul className="list-issued-id">
-                  <li>
-                    On a blank piece of white paper write your name, today&apos;s date and our website address
-                    {' '}
-                    {window.location.hash}
-                  </li>
-                  <li>Hold your paper and your ID so we can clearly see hoth</li>
-                  <li>Take a selfie of you, your ID and your handwritten note. All three elements (you, your ID and your writting) must be clearly visible without copying or editing</li>
+                  <li>Take a selfie with you and your ID</li>
+                  <li>Make sure you and your ID are visible </li>
                 </ul>
               </div>
             </Form.Item>
           </Col>
         </Row>
+
+        <Button type="primary" htmlType="submit" className="primary">
+          Save Changes
+        </Button>
       </Form>
     );
   }

@@ -299,21 +299,27 @@ class Header extends PureComponent<IProps> {
                     // </li>,
                     <li
                       key="login"
-                      className={router.pathname === "/" ? "active" : ""}
+                      className={`header-login ${
+                        router.pathname === "/" ? "active" : ""
+                      }`}
                     >
-                      <Link href="/">
-                        <a>Log In</a>
-                      </Link>
+                      <div className="header-login-main" id="sign-up">
+                        <Link href="/">
+                          <a>Log in</a>
+                        </Link>
+                      </div>
                     </li>,
                     <li
                       key="signup"
-                      className={
+                      className={`header-signup ${
                         router.pathname === "/auth/register" ? "active" : ""
-                      }
+                      }`}
                     >
-                      <Link href="/auth/register">
-                        <a>Sign Up</a>
-                      </Link>
+                      <div className="header-signup-main" id="sign-up">
+                        <Link href="/auth/register">
+                          <a>Sign up</a>
+                        </Link>
+                      </div>
                     </li>,
                   ]}
                   {user._id && (

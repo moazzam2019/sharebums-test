@@ -159,6 +159,7 @@
     position: relative;
     font-size: 15px;
     font-weight: 600;
+
     .ant-avatar {
       width: 40px;
       height: 40px;
@@ -186,7 +187,7 @@
       }
 
       a {
-        color: @primary-color;
+        color: black;
       }
 
       border-color: @black;
@@ -442,6 +443,55 @@
           height: 23px;
           width: auto;
         }
+      }
+    }
+  }
+}
+.header-login {
+  .header-login-main {
+    padding: 11px 22px;
+    margin: 6px 0;
+    color: #ff5864;
+    border-radius: 8px;
+    border: 1.5px solid #ea4335;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    text-align: left;
+
+    a {
+      color: #ea4335;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}
+
+.header-signup {
+  .header-signup-main {
+    background: linear-gradient(
+      225deg,
+      #fd297b 0%,
+      #ff5864 52.6%,
+      #ff655b 100%
+    );
+    padding: 11px 22px;
+    margin: 3px 0;
+    border-radius: 8px;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    text-align: left;
+
+    a {
+      color: white;
+      &:hover {
+        color: black;
       }
     }
   }
