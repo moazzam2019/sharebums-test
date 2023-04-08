@@ -1,26 +1,24 @@
-import { PureComponent, createRef } from 'react';
-import {
-  Form, Input, Button, Row, Col, Select
-} from 'antd';
-import { utilsService } from 'src/services';
-import { IPerformer, ICountry } from 'src/interfaces';
+import { PureComponent, createRef } from "react";
+import { Form, Input, Button, Row, Col, Select } from "antd";
+import { utilsService } from "src/services";
+import { IPerformer, ICountry } from "src/interfaces";
 
 const { Option } = Select;
 const layout = {
   labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  wrapperCol: { span: 24 },
 };
 
 const validateMessages = {
-  required: 'This field is required!',
+  required: "This field is required!",
   types: {
-    email: 'Not a validate email!',
-    number: 'Not a validate number!'
+    email: "Not a validate email!",
+    number: "Not a validate number!",
   },
   number: {
     // eslint-disable-next-line no-template-curly-in-string
-    range: 'Must be between ${min} and ${max}'
-  }
+    range: "Must be between ${min} and ${max}",
+  },
 };
 
 interface IProps {
@@ -33,8 +31,8 @@ interface IProps {
 export class PerformerBankingForm extends PureComponent<IProps> {
   state = {
     states: [],
-    cities: []
-  }
+    cities: [],
+  };
 
   formRef: any;
 
@@ -43,7 +41,10 @@ export class PerformerBankingForm extends PureComponent<IProps> {
     if (user?.bankingInformation?.country) {
       this.handleGetStates(user?.bankingInformation?.country);
       if (user?.bankingInformation?.state) {
-        this.handleGetCities(user?.bankingInformation?.state, user?.bankingInformation?.country);
+        this.handleGetCities(
+          user?.bankingInformation?.state,
+          user?.bankingInformation?.country
+        );
       }
     }
   }
@@ -56,9 +57,9 @@ export class PerformerBankingForm extends PureComponent<IProps> {
     if (eState) {
       this.formRef.setFieldsValue({ state: eState });
     } else {
-      this.formRef.setFieldsValue({ state: '', city: '' });
+      this.formRef.setFieldsValue({ state: "", city: "" });
     }
-  }
+  };
 
   handleGetCities = async (state: string, countryCode: string) => {
     const { user } = this.props;
@@ -68,15 +69,13 @@ export class PerformerBankingForm extends PureComponent<IProps> {
     if (eCity) {
       this.formRef.setFieldsValue({ city: eCity });
     } else {
-      this.formRef.setFieldsValue({ city: '' });
+      this.formRef.setFieldsValue({ city: "" });
     }
-  }
+  };
 
   render() {
     if (!this.formRef) this.formRef = createRef();
-    const {
-      onFinish, user, updating, countries
-    } = this.props;
+    const { onFinish, user, updating, countries } = this.props;
     const { states, cities } = this.state;
     return (
       <Form
@@ -87,15 +86,16 @@ export class PerformerBankingForm extends PureComponent<IProps> {
         initialValues={user?.bankingInformation}
         labelAlign="left"
         className="account-form"
-        ref={(ref) => { this.formRef = ref; }}
+        ref={(ref) => {
+          this.formRef = ref;
+        }}
       >
         <Row>
           <Col xl={12} md={12} xs={12}>
             <Form.Item
-              label="First name"
               name="firstName"
               rules={[
-                { required: true, message: 'Please input your first name!' }
+                { required: true, message: "Please input your first name!" },
               ]}
             >
               <Input placeholder="First name" />
@@ -104,9 +104,8 @@ export class PerformerBankingForm extends PureComponent<IProps> {
           <Col xl={12} md={12} xs={12}>
             <Form.Item
               name="lastName"
-              label="Last name"
               rules={[
-                { required: true, message: 'Please input your last name!' }
+                { required: true, message: "Please input your last name!" },
               ]}
             >
               <Input placeholder="Last name" />
@@ -115,9 +114,8 @@ export class PerformerBankingForm extends PureComponent<IProps> {
           <Col xl={12} md={12} xs={12}>
             <Form.Item
               name="bankName"
-              label="Bank name"
               rules={[
-                { required: true, message: 'Please input your bank name!' }
+                { required: true, message: "Please input your bank name!" },
               ]}
             >
               <Input placeholder="Bank name" />
@@ -126,9 +124,8 @@ export class PerformerBankingForm extends PureComponent<IProps> {
           <Col xl={12} md={12} xs={12}>
             <Form.Item
               name="bankAccount"
-              label="Bank Account"
               rules={[
-                { required: true, message: 'Please input your bank account!' }
+                { required: true, message: "Please input your bank account!" },
               ]}
             >
               <Input placeholder="Bank account" />
@@ -137,8 +134,7 @@ export class PerformerBankingForm extends PureComponent<IProps> {
           <Col xl={12} md={12} xs={12}>
             <Form.Item
               name="country"
-              label="Country"
-              rules={[{ required: true, message: 'Please choose country!' }]}
+              rules={[{ required: true, message: "Please choose country!" }]}
             >
               <Select
                 showSearch
@@ -147,21 +143,24 @@ export class PerformerBankingForm extends PureComponent<IProps> {
               >
                 {countries.map((c) => (
                   <Option key={c.code} value={c.code} label={c.name}>
-                    <img alt="flag" src={c?.flag} width="20px" />
-                    {' '}
-                    {c.name}
+                    <img alt="flag" src={c?.flag} width="20px" /> {c.name}
                   </Option>
                 ))}
               </Select>
             </Form.Item>
           </Col>
           <Col xl={12} md={12} xs={12}>
-            <Form.Item name="state" label="State">
+            <Form.Item name="state">
               <Select
                 placeholder="Select your state"
                 optionFilterProp="label"
                 showSearch
-                onChange={(val: string) => this.handleGetCities(val, this.formRef.getFieldValue('country'))}
+                onChange={(val: string) =>
+                  this.handleGetCities(
+                    val,
+                    this.formRef.getFieldValue("country")
+                  )
+                }
               >
                 {states.map((state) => (
                   <Option value={state} label={state} key={state}>
@@ -172,10 +171,7 @@ export class PerformerBankingForm extends PureComponent<IProps> {
             </Form.Item>
           </Col>
           <Col xl={12} md={12} xs={12}>
-            <Form.Item
-              name="city"
-              label="City"
-            >
+            <Form.Item name="city">
               <Select
                 placeholder="Select your city"
                 showSearch
@@ -190,17 +186,17 @@ export class PerformerBankingForm extends PureComponent<IProps> {
             </Form.Item>
           </Col>
           <Col xl={12} md={12} xs={12}>
-            <Form.Item name="address" label="Address">
+            <Form.Item name="address">
               <Input placeholder="Address" />
             </Form.Item>
           </Col>
           <Col xl={12} md={12} xs={12}>
-            <Form.Item name="bankRouting" label="Bank Routing">
+            <Form.Item name="bankRouting">
               <Input placeholder="Bank routing" />
             </Form.Item>
           </Col>
           <Col xl={12} md={12} xs={12}>
-            <Form.Item name="bankSwiftCode" label="Bank swift code">
+            <Form.Item name="bankSwiftCode">
               <Input placeholder="Bank swift code" />
             </Form.Item>
           </Col>
@@ -210,7 +206,7 @@ export class PerformerBankingForm extends PureComponent<IProps> {
             </Form.Item>
           </Col> */}
         </Row>
-        <Form.Item className="text-center">
+        <Form.Item className="text-left">
           <Button
             className="primary"
             htmlType="submit"

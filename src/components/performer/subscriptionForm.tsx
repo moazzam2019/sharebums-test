@@ -1,20 +1,18 @@
-import { PureComponent } from 'react';
-import {
-  Form, InputNumber, Button, Row, Col, Switch
-} from 'antd';
-import { IPerformer } from 'src/interfaces';
+import { PureComponent } from "react";
+import { Form, InputNumber, Button, Row, Col, Switch } from "antd";
+import { IPerformer } from "src/interfaces";
 
 const layout = {
   labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  wrapperCol: { span: 24 },
 };
 
 const validateMessages = {
-  required: 'This field is required!',
+  required: "This field is required!",
   types: {
-    email: 'Not a validate email!',
-    number: 'Not a validate number!'
-  }
+    email: "Not a validate email!",
+    number: "Not a validate number!",
+  },
 };
 
 interface IProps {
@@ -56,14 +54,16 @@ export class PerformerSubscriptionForm extends PureComponent<IProps> {
               <InputNumber min={1} />
             </Form.Item>
             )} */}
-            <Form.Item
-              name="monthlyPrice"
-              label="Monthly Subscription Price"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Form.Item
+            <div style={{ display: "flex", justifyContent: "flex-start" }}>
+              <Form.Item name="monthlyPrice" rules={[{ required: true }]}>
+                <InputNumber min={0} />
+              </Form.Item>
+              <div style={{ paddingTop: "12px" }}>
+                <span style={{ marginRight: "5px" }}>US</span>
+                <span>$</span>
+              </div>
+            </div>
+            {/* <Form.Item
               name="yearlyPrice"
               label="Yearly Subscription Price"
               rules={[{ required: true }]}
@@ -77,7 +77,7 @@ export class PerformerSubscriptionForm extends PureComponent<IProps> {
               rules={[{ required: true }]}
             >
               <InputNumber min={1} />
-            </Form.Item>
+            </Form.Item> */}
           </Col>
           {/* <Col xl={12} md={12} xs={24}>
             <Form.Item
@@ -104,8 +104,14 @@ export class PerformerSubscriptionForm extends PureComponent<IProps> {
             </Form.Item>
           </Col> */}
         </Row>
-        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-          <Button className="primary" type="primary" htmlType="submit" disabled={updating} loading={updating}>
+        <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Button
+            className="primary"
+            type="primary"
+            htmlType="submit"
+            disabled={updating}
+            loading={updating}
+          >
             Save Changes
           </Button>
         </Form.Item>

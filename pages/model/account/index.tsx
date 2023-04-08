@@ -3,6 +3,11 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { Tabs, message, Layout } from "antd";
 import { IPerformer, IUIConfig, ICountry, IBody } from "src/interfaces";
+import {
+  StripeConnectForm,
+  PerformerPaypalForm,
+  PerformerBankingForm,
+} from "@components/performer";
 import BlockCountries from "../block-countries";
 import {
   updatePerformer,
@@ -28,6 +33,7 @@ import {
   LeftArrowIcon,
 } from "src/icons";
 import Link from "next/link";
+import BankingSettings from "../banking/index";
 
 interface IProps {
   currentUser: IPerformer;
@@ -61,6 +67,7 @@ class AccountSettings extends PureComponent<IProps> {
     emailSending: false,
     countTime: 60,
     menuItem: "appearance",
+    bankingTab: "banktransfer",
   };
 
   handleCountdown = async () => {
@@ -147,9 +154,17 @@ class AccountSettings extends PureComponent<IProps> {
     this.setState({ menuItem: "blockaccounts" });
   };
 
+  bankTransferTab = () => {
+    this.setState({ bankingTab: "banktransfer" });
+  };
+
+  paypalTab = () => {
+    this.setState({ bankingTab: "paypal" });
+  };
+
   render() {
     const { currentUser, updating, ui, countries, bodyInfo } = this.props;
-    const { emailSending, countTime, menuItem } = this.state;
+    const { emailSending, countTime, menuItem, bankingTab } = this.state;
     console.log(this.props);
     const uploadHeaders = {
       authorization: authService.getToken(),
@@ -285,6 +300,14 @@ class AccountSettings extends PureComponent<IProps> {
                   <div className="account-menu-description">
                     This is where you can set your monthly subscription price.
                   </div>
+                  <div className="account-pricing-description">
+                    Monthly Subscription Rate
+                  </div>
+                  <PerformerSubscriptionForm
+                    onFinish={this.submit.bind(this)}
+                    updating={updating}
+                    user={currentUser}
+                  />
                 </>
               )}
               {menuItem === "iddocuments" && (
@@ -306,6 +329,8 @@ class AccountSettings extends PureComponent<IProps> {
                     Set up preferred account where you would like your payouts
                     to be deposited to:
                   </div>
+
+                  <BankingSettings countries={countries} user={currentUser} />
                 </>
               )}
               {menuItem === "blockcountries" && (

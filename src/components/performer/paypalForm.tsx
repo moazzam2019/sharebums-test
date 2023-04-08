@@ -1,20 +1,18 @@
-import { PureComponent } from 'react';
-import {
-  Form, Button, Input, Row, Col
-} from 'antd';
-import { IPerformer } from 'src/interfaces';
+import { PureComponent } from "react";
+import { Form, Button, Input, Row, Col } from "antd";
+import { IPerformer } from "src/interfaces";
 
 const layout = {
   labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  wrapperCol: { span: 24 },
 };
 
 const validateMessages = {
-  required: 'This field is required!',
+  required: "This field is required!",
   types: {
-    email: 'Not a validate email!',
-    number: 'Not a validate number!'
-  }
+    email: "Not a validate email!",
+    number: "Not a validate number!",
+  },
 };
 
 interface IProps {
@@ -32,10 +30,12 @@ export class PerformerPaypalForm extends PureComponent<IProps> {
         name="nest-messages"
         onFinish={onFinish.bind(this)}
         validateMessages={validateMessages}
-        initialValues={user?.paypalSetting?.value || {
-          email: '',
-          phoneNumber: ''
-        }}
+        initialValues={
+          user?.paypalSetting?.value || {
+            email: "",
+            phoneNumber: "",
+          }
+        }
         labelAlign="left"
         className="account-form"
       >
@@ -43,14 +43,18 @@ export class PerformerPaypalForm extends PureComponent<IProps> {
           <Col lg={12} xs={24}>
             <Form.Item
               name="email"
-              label="Paypal account email"
               // help="You must upgrade to Business account to receive the payout from Admin"
             >
               <Input />
             </Form.Item>
-            <Form.Item className="text-center">
-              <Button className="secondary" htmlType="submit" disabled={updating} loading={updating}>
-                Submit
+            <Form.Item className="text-left">
+              <Button
+                className="primary"
+                htmlType="submit"
+                disabled={updating}
+                loading={updating}
+              >
+                Save Changes
               </Button>
             </Form.Item>
           </Col>
