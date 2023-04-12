@@ -1,4 +1,6 @@
 import { Layout, Tabs, Button, message, Modal, Image, Tooltip } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+
 import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getVideos, moreVideo } from "@redux/video/actions";
@@ -20,6 +22,7 @@ import Head from "next/head";
 import { EditOutlined } from "@ant-design/icons";
 import {
   TickIcon,
+  TickModelProfileIcon,
   FeedFillSvg,
   VideoFillSvg,
   ShopSvg,
@@ -99,6 +102,7 @@ class PerformerProfile extends PureComponent<IProps> {
     galleryPage: 0,
     showWelcomVideo: false,
     openTipModal: false,
+    openFollowersModal: false,
     submiting: false,
     isBookMarked: false,
     requesting: false,
@@ -476,6 +480,8 @@ class PerformerProfile extends PureComponent<IProps> {
       galleryState,
       countries,
     } = this.props;
+
+    console.log(performer);
     if (error) {
       return (
         <Error
@@ -514,6 +520,7 @@ class PerformerProfile extends PureComponent<IProps> {
       isGrid,
       subscriptionType,
       isFollowed,
+      openFollowersModal,
     } = this.state;
     return (
       <Layout>
@@ -557,7 +564,7 @@ class PerformerProfile extends PureComponent<IProps> {
               <Sidebar />
             </div>
             <div className="profile-right-container">
-              <div className="main-container">
+              {/* <div className="main-container">
                 <div
                   className="top-profile"
                   style={{
@@ -576,7 +583,7 @@ class PerformerProfile extends PureComponent<IProps> {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
               <div className="main-profile">
                 <div className="main-container">
                   <div className="fl-col">
@@ -585,20 +592,24 @@ class PerformerProfile extends PureComponent<IProps> {
                       src={performer?.avatar || "/static/no-avatar.png"}
                       fallback="/static/no-avatar.png"
                     />
-                    {user?._id !== performer?._id && (
-                      <span
-                        className={
-                          performer?.isOnline > 0
-                            ? "online-status"
-                            : "online-status off"
-                        }
-                      />
+                    {performer?.isOnline > 0 && (
+                      <>
+                        <span className="online-status">active now </span>
+                        <span
+                          className={
+                            performer?.isOnline > 0
+                              ? "online-status-active"
+                              : "online-status off"
+                          }
+                        />
+                      </>
                     )}
+
                     <div className="m-user-name">
                       <h4>
                         {performer?.name || "N/A"}
                         &nbsp;
-                        {performer?.verifiedAccount && <TickIcon />}
+                        {performer?.verifiedAccount && <TickModelProfileIcon />}
                         &nbsp;
                         {performer?.live > 0 &&
                           user?._id !== performer?._id && (
@@ -672,14 +683,18 @@ class PerformerProfile extends PureComponent<IProps> {
                     )}
                   </div>
                   <div className="tab-stat-custom">
-                    <div className="tab-item-custom">
-                      <span>
+                    <div className="tab-item-custom follow">
+                      <span
+                        onClick={() => {
+                          this.setState({
+                            openFollowersModal: true,
+                          });
+                        }}
+                      >
                         <b className="tab-item-bold">
-                          {shortenLargeNumber(
-                            performer?.stats?.subscribers || 0
-                          )}
+                          {shortenLargeNumber(performer?.stats?.followers || 0)}
                         </b>{" "}
-                        Followers
+                        <span className="tab-item-normal"> Followers</span>
                       </span>
                     </div>
                     <div className="tab-item-custom">
@@ -687,7 +702,7 @@ class PerformerProfile extends PureComponent<IProps> {
                         <b className="tab-item-bold">
                           {shortenLargeNumber(totalFeed || 0)}
                         </b>{" "}
-                        Posts
+                        <span className="tab-item-normal"> Posts</span>
                       </span>
                     </div>
                   </div>
@@ -713,12 +728,12 @@ class PerformerProfile extends PureComponent<IProps> {
                         }}
                       >
                         SUBSCRIBE FOR{" "}
-                        {performer && performer?.monthlyPrice.toFixed(2)} $ PER
+                        {performer && performer?.monthlyPrice.toFixed(2)}$ /
                         MONTH
                       </button>
                     </div>
                   )}
-                  {!performer?.isSubscribed && !user.isPerformer && (
+                  {/* {!performer?.isSubscribed && !user.isPerformer && (
                     <div className="subscription-bl subscription-bl-year">
                       <button
                         type="button"
@@ -735,7 +750,7 @@ class PerformerProfile extends PureComponent<IProps> {
                         YEAR
                       </button>
                     </div>
-                  )}
+                  )} */}
                   {/* {performer?.isFreeSubscription && !performer?.isSubscribed && !user.isPerformer && (
               <div className="subscription-bl">
                 <button
@@ -773,7 +788,7 @@ class PerformerProfile extends PureComponent<IProps> {
                     <TabPane
                       tab={
                         <>
-                          <FeedFillSvg /> All
+                          <VideoFillSvg /> Content ({feeds.length})
                         </>
                       }
                       key="post"
@@ -796,7 +811,7 @@ class PerformerProfile extends PureComponent<IProps> {
                         />
                       </div>
                     </TabPane>
-                    <TabPane
+                    {/* <TabPane
                       tab={
                         <>
                           <VideoFillSvg /> Video {`(${totalVideos})`}
@@ -804,9 +819,6 @@ class PerformerProfile extends PureComponent<IProps> {
                       }
                       key="video"
                     >
-                      {/* <div className="heading-tab">
-                  <SearchPostBar searching={loadingVideo} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
-                </div> */}
                       <div className="main-container">
                         <ScrollListVideo
                           items={videos}
@@ -815,8 +827,8 @@ class PerformerProfile extends PureComponent<IProps> {
                           loadMore={this.loadMoreItem.bind(this)}
                         />
                       </div>
-                    </TabPane>
-                    <TabPane
+                    </TabPane> */}
+                    {/* <TabPane
                       tab={
                         <>
                           <ImageFillBlackSvg /> Image {`(${totalGalleries})`}
@@ -824,9 +836,6 @@ class PerformerProfile extends PureComponent<IProps> {
                       }
                       key="photo"
                     >
-                      {/* <div className="heading-tab">
-                  <SearchPostBar searching={loadingGallery} tab={tab} handleSearch={this.handleFilterSearch.bind(this)} />
-                </div> */}
                       <div className="main-container">
                         <ScrollListGallery
                           items={galleries}
@@ -837,7 +846,7 @@ class PerformerProfile extends PureComponent<IProps> {
                           loadMore={this.loadMoreItem.bind(this)}
                         />
                       </div>
-                    </TabPane>
+                    </TabPane> */}
                     <TabPane
                       tab={
                         <>
@@ -948,6 +957,250 @@ class PerformerProfile extends PureComponent<IProps> {
             submiting={submiting}
             onFinish={this.subscribe.bind(this)}
           />
+        </Modal>
+        <Modal
+          key="follower_performer"
+          className="followers-modal"
+          width={600}
+          centered
+          title={null}
+          visible={openFollowersModal}
+          footer={null}
+          onCancel={() => this.setState({ openFollowersModal: false })}
+          destroyOnClose
+          bodyStyle={{
+            height: "537px",
+            borderRadius: "8px",
+            overflow: "auto",
+          }}
+          style={{ top: 20 }}
+          closeIcon={
+            <CloseOutlined
+              style={{
+                color: "#333333",
+                fontSize: 18,
+                position: "relative",
+                top: "20px",
+                right: "20px",
+              }}
+            />
+          }
+        >
+          <>
+            <div className="modal-followers-heading">
+              Followers ({shortenLargeNumber(performer?.stats?.followers || 0)})
+            </div>
+            <div className="modal-followers">
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="modal-followers-item">
+                <img
+                  src={performer?.avatar}
+                  alt="NA"
+                  className="modal-followers-image"
+                />
+                <div className="modal-followers-item-bottom-content">
+                  <span className="modal-text">Name</span>{" "}
+                  <span className="model-icon">
+                    <TickIcon />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </>
         </Modal>
         {submiting && (
           <Loader customText="We are processing your payment, please do not reload this page until it's done." />

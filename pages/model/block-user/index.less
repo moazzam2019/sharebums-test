@@ -1,7 +1,37 @@
-@import '../../../style/vars.less';
+@import "../../../style/vars.less";
 
 .block-user {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.block-fans-bottom {
+  display: flex;
+  margin-bottom: 13px;
+
+  .block-fans-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  .block-fans-name {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #161616;
+    margin-right: 6px;
+    margin-top: 4px;
+  }
+  .block-fans-verify-icon {
+    margin-right: 14px;
+  }
+  .block-fans-delete-icon {
+    cursor: pointer;
+  }
 }

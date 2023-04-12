@@ -651,7 +651,7 @@
 
   .feed-grid-card {
     width: 33.33%;
-    padding: 15px 40px 15px 0;
+    padding: 15px 6px 15px 0;
     margin-bottom: 10px;
     overflow: hidden;
 
@@ -661,13 +661,16 @@
 
     .card-viewer {
       position: relative;
-      height: 257px;
+      height: 217px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid @light-grey;
+      &:hover {
+        cursor: pointer;
+      }
 
       .no-image {
         height: 100%;
@@ -690,7 +693,7 @@
             height: 100%;
 
             img {
-              width: 100%;
+              width: 283px;
               height: 257px;
               object-fit: cover;
             }
@@ -755,9 +758,13 @@
       min-height: 47px;
       background-color: @white;
       padding: 5px;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 400;
       line-height: 23px;
-      font-size: 18px;
-      font-weight: 600;
+      letter-spacing: 0em;
+      text-align: left;
+
       text-transform: capitalize;
       text-align: left;
       overflow: hidden;

@@ -44,11 +44,15 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
           <a>
             <div
               className={`full-icon ${
-                router.pathname === "/model" ? "active-icon-name" : ""
+                router.pathname === "/model" ||
+                router.pathname === "/model/profile"
+                  ? "active-icon-name"
+                  : ""
               }`}
             >
               <div className="icon">
-                {router.pathname === "/model" ? (
+                {router.pathname === "/model" ||
+                router.pathname === "/model/profile" ? (
                   <ModelActiveIcon />
                 ) : (
                   <ModelIcon />

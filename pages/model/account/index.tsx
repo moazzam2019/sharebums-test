@@ -34,6 +34,9 @@ import {
 } from "src/icons";
 import Link from "next/link";
 import BankingSettings from "../banking/index";
+import PersonalInfo from "@components/performer/common/personalInfo";
+import Appearance from "@components/performer/common/appearance";
+import BlockPage from "../block-user/index";
 
 interface IProps {
   currentUser: IPerformer;
@@ -279,6 +282,23 @@ class AccountSettings extends PureComponent<IProps> {
                     This is where you can edit your profile & add a introduction
                     video.
                   </div>
+                  <Appearance
+                    onFinish={this.submit.bind(this)}
+                    updating={updating || emailSending}
+                    countTime={countTime}
+                    onVerifyEmail={this.verifyEmail.bind(this)}
+                    user={currentUser}
+                    options={{
+                      uploadHeaders,
+                      avatarUploadUrl: performerService.getAvatarUploadUrl(),
+                      onAvatarUploaded: this.onAvatarUploaded.bind(this),
+                      coverUploadUrl: performerService.getCoverUploadUrl(),
+                      onCoverUploaded: this.onCoverUploaded.bind(this),
+                      videoUploadUrl: performerService.getVideoUploadUrl(),
+                    }}
+                    countries={countries}
+                    bodyInfo={bodyInfo}
+                  />
                 </>
               )}
               {menuItem === "account" && (
@@ -292,6 +312,23 @@ class AccountSettings extends PureComponent<IProps> {
                     published anywhere. It is only for verifying that you are
                     you and of legal age.
                   </div>
+                  <PersonalInfo
+                    onFinish={this.submit.bind(this)}
+                    updating={updating || emailSending}
+                    countTime={countTime}
+                    onVerifyEmail={this.verifyEmail.bind(this)}
+                    user={currentUser}
+                    options={{
+                      uploadHeaders,
+                      avatarUploadUrl: performerService.getAvatarUploadUrl(),
+                      onAvatarUploaded: this.onAvatarUploaded.bind(this),
+                      coverUploadUrl: performerService.getCoverUploadUrl(),
+                      onCoverUploaded: this.onCoverUploaded.bind(this),
+                      videoUploadUrl: performerService.getVideoUploadUrl(),
+                    }}
+                    countries={countries}
+                    bodyInfo={bodyInfo}
+                  />
                 </>
               )}
               {menuItem === "pricing" && (
@@ -352,6 +389,7 @@ class AccountSettings extends PureComponent<IProps> {
                     This is where you can block fans that you don’t wish to have
                     access to your profile anymore.
                   </div>
+                  <BlockPage />
                 </>
               )}
             </div>
