@@ -56,7 +56,7 @@ export class PerformerSubscriptionForm extends PureComponent<IProps> {
             )} */}
             <div style={{ display: "flex", justifyContent: "flex-start" }}>
               <Form.Item name="monthlyPrice" rules={[{ required: true }]}>
-                <InputNumber min={0} />
+                <InputNumber min={0} style={{ width: "100%" }} />
               </Form.Item>
               <div style={{ paddingTop: "12px" }}>
                 <span style={{ marginRight: "5px" }}>US</span>

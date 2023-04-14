@@ -79,7 +79,6 @@ const Appearance: React.FC<Props> = (props) => {
     },
   };
 
-  console.log(props);
   return (
     <>
       <Form
