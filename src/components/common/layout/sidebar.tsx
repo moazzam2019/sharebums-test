@@ -23,12 +23,20 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
   const [randomPerformers, setRandomPerformers] = useState<User[]>([]);
   const [isFreeSubscription, setIsFreeSubscription] = useState<boolean>(false);
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [showAllFollowed, setShowAllFollowed] = useState<boolean>(false);
 
   const handleClickShowAll = () => {
     setShowAll(true);
   };
   const handleClickShowLess = () => {
     setShowAll(false);
+  };
+
+  const handleClickShowAllFollowed = () => {
+    setShowAllFollowed(true);
+  };
+  const handleClickShowLessFollowed = () => {
+    setShowAllFollowed(false);
   };
 
   useEffect(() => {
@@ -96,9 +104,19 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
           </a>
         </Link>
       </div>
+      {!user._id && (
+        <div className="sign-up-sidebar">
+          <div className="sign-up-sidebar-text">
+            Sign up to follow models, see their content and chat.
+          </div>
+          <Link href="/auth/fan-register">
+            <div className="sign-up-sidebar-button">Sign up</div>
+          </Link>
+        </div>
+      )}
       {/* Fan View Starts Here */}
       {/* Suggested Accounts */}
-      {(!user.isPerformer || !user) && (
+      {(!user.isPerformer || !user._id) && (
         <div className="fans-main">
           <div>Suggested Accounts</div>
           {randomPerformers.length > 0 &&
@@ -140,34 +158,49 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
         </div>
       )}
       {/* Accounts you follow */}
-      {!user.isPerformer && user._id && (
+      {!user.isPerformer && randomPerformers?.length > 0 && user._id && (
         <div className="followers-main">
           <div>Accounts you follow</div>
-          {randomPerformers.length > 0 &&
-            randomPerformers
-              .filter((performer) => performer.isFollowed === true)
-              .map((performer) => (
-                <Link href={`/${performer.username}`} key={performer._id}>
-                  <div
-                    className="active-fans-main"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img src={performer.avatar} alt={performer.name} />
-                    <div>
-                      <span className="active-fan-name">{performer.name}</span>
-                      <br />
-                      <span className="active-fan-username">
-                        @{performer.username}
-                      </span>
-                    </div>
-                    {performer.verifiedAccount && (
-                      <div className="tick-icon">
-                        <TickIcon />
-                      </div>
-                    )}
+          {randomPerformers
+            .filter((performer) => performer.isFollowed === true)
+            .slice(0, showAllFollowed ? randomPerformers.length : 6) // Use slice to limit number of accounts displayed
+            .map((performer) => (
+              <Link href={`/${performer.username}`} key={performer._id}>
+                <div className="active-fans-main" style={{ cursor: "pointer" }}>
+                  <img src={performer.avatar} alt={performer.name} />
+                  <div>
+                    <span className="active-fan-name">{performer.name}</span>
+                    <br />
+                    <span className="active-fan-username">
+                      @{performer.username}
+                    </span>
                   </div>
-                </Link>
-              ))}
+                  {performer.verifiedAccount && (
+                    <div className="tick-icon">
+                      <TickIcon />
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
+          {randomPerformers.filter((performer) => performer.isFollowed === true)
+            .length > 6 &&
+            !showAllFollowed && (
+              <div
+                onClick={handleClickShowAllFollowed}
+                className="show-all-and-less"
+              >
+                Show all
+              </div>
+            )}
+          {randomPerformers.length > 6 && showAllFollowed && (
+            <div
+              onClick={handleClickShowLessFollowed}
+              className="show-all-and-less"
+            >
+              Show less
+            </div>
+          )}
         </div>
       )}
       {/* Model View Starts Here */}
