@@ -168,7 +168,6 @@ class AccountSettings extends PureComponent<IProps> {
   render() {
     const { currentUser, updating, ui, countries, bodyInfo } = this.props;
     const { emailSending, countTime, menuItem, bankingTab } = this.state;
-    console.log(this.props);
     const uploadHeaders = {
       authorization: authService.getToken(),
     };

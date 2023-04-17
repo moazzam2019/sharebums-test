@@ -65,7 +65,6 @@ class BlockCountries extends PureComponent<IProps> {
           {/* <PageHeading title="Block Countries" icon={<StopOutlined />} /> */}
           <PerformerBlockCountriesForm
             onFinish={() => {
-              console.log(this);
               return this.handleUpdateBlockCountries.bind(this);
             }}
             updating={submiting}

@@ -9,6 +9,54 @@ interface IIcons {
   className?: string;
 }
 
+const SendSvg = () => (
+  <svg
+    width="30"
+    height="26"
+    viewBox="0 0 30 26"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M29.4882 0.666673C29.25 0.254133 28.8099 0 28.3335 0H1.66686C1.139 0 0.660849 0.3114 0.447396 0.794167C0.233949 1.27693 0.325396 1.84017 0.680616 2.23061L7.64063 9.8806C8.0093 10.2859 8.58843 10.4243 9.10056 10.2297L18.7668 6.55573C18.8794 6.51293 18.9304 6.53067 18.9526 6.53947C18.9916 6.555 19.0474 6.5952 19.0912 6.6694C19.135 6.7436 19.1433 6.81193 19.138 6.85347C19.135 6.87727 19.1258 6.93053 19.0341 7.00833L11.0978 13.7399C10.6888 14.0867 10.5274 14.6449 10.6882 15.1565L13.7282 24.8265C13.8868 25.3311 14.3287 25.6942 14.8545 25.752C15.3802 25.8098 15.8904 25.5514 16.1549 25.0933L29.4882 2.00001C29.7264 1.58748 29.7264 1.07921 29.4882 0.666673Z"
+      fill="#B0B0B3"
+    />
+  </svg>
+);
+
+const SendSvgHover = () => (
+  <svg
+    width="30"
+    height="26"
+    viewBox="0 0 30 26"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M29.4882 0.666673C29.25 0.254133 28.8099 0 28.3335 0H1.66686C1.139 0 0.660849 0.3114 0.447396 0.794167C0.233949 1.27693 0.325396 1.84017 0.680616 2.23061L7.64063 9.8806C8.0093 10.2859 8.58843 10.4243 9.10056 10.2297L18.7668 6.55573C18.8794 6.51293 18.9304 6.53067 18.9526 6.53947C18.9916 6.555 19.0474 6.5952 19.0912 6.6694C19.135 6.7436 19.1433 6.81193 19.138 6.85347C19.135 6.87727 19.1258 6.93053 19.0341 7.00833L11.0978 13.7399C10.6888 14.0867 10.5274 14.6449 10.6882 15.1565L13.7282 24.8265C13.8868 25.3311 14.3287 25.6942 14.8545 25.752C15.3802 25.8098 15.8904 25.5514 16.1549 25.0933L29.4882 2.00001C29.7264 1.58748 29.7264 1.07921 29.4882 0.666673Z"
+      fill="url(#paint0_linear_1_1278)"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear_1_1278"
+        x1="29.6669"
+        y1="0"
+        x2="4.12269"
+        y2="29.0876"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="#FD297B" />
+        <stop offset="0.526042" stop-color="#FF5864" />
+        <stop offset="1" stop-color="#FF655B" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 const DeleteSvg = () => (
   <svg
     width="12"
@@ -1306,6 +1354,22 @@ export const TickModelProfileIcon = ({
 export const DeleteIcon = ({ style, rotate, spin, className }: IIcons) => (
   <Icon
     component={DeleteSvg}
+    className={className ? `${className} anticon-custom` : "anticon-custom"}
+    {...{ style, rotate, spin }}
+  />
+);
+
+export const SendIcon = ({ style, rotate, spin, className }: IIcons) => (
+  <Icon
+    component={SendSvg}
+    className={className ? `${className} anticon-custom` : "anticon-custom"}
+    {...{ style, rotate, spin }}
+  />
+);
+
+export const SendHoverIcon = ({ style, rotate, spin, className }: IIcons) => (
+  <Icon
+    component={SendSvgHover}
     className={className ? `${className} anticon-custom` : "anticon-custom"}
     {...{ style, rotate, spin }}
   />

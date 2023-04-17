@@ -1,4 +1,4 @@
-@import '../../../style/vars.less';
+@import "../../../style/vars.less";
 
 .message {
   display: flex;
@@ -10,12 +10,12 @@
 
     .bubble {
       margin: 5px 0px;
-      background: @theme-color;
-      padding: 10px 15px;
+      padding: 8px 13px;
       border-radius: 10px;
       max-width: 75%;
-      border-radius: 5px;
-      color: @white;
+      border-radius: 11px;
+      border: 1px solid #cccccc;
+      color: #161616;
 
       .anticon-ellipsis {
         transform: rotate(90deg);
@@ -29,24 +29,25 @@
     }
 
     .avatar {
-      width: 22px;
-      height: 22px;
+      width: 40px;
+      height: 40px;
       margin: 6px 8px 0 0;
     }
   }
 
   .timestamp {
     display: flex;
-    justify-content: flex-start;
-    color: @grey-color;
+    justify-content: center;
+    color: #666666;
+    font-family: "Inter";
     font-weight: 600;
-    font-size: 8px;
+    font-size: 12px;
     margin: 5px 0px;
   }
 
   &.mine {
     .timestamp {
-      justify-content: flex-end;
+      justify-content: center;
     }
 
     .bubble-container {

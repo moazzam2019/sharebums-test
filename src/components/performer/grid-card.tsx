@@ -77,7 +77,6 @@ class PerformerGridCard extends PureComponent<IProps> {
   render() {
     const { performer, user } = this.props;
     const { isFollowed } = this.state;
-    console.log(user, performer);
 
     return (
       <Link

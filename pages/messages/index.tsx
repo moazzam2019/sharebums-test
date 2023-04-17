@@ -1,10 +1,10 @@
-import { Layout } from 'antd';
-import { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import Head from 'next/head';
-import { IUIConfig } from 'src/interfaces/';
-import Messenger from '@components/messages/Messenger';
-import { resetMessageState } from '@redux/message/actions';
+import { Layout } from "antd";
+import { PureComponent } from "react";
+import { connect } from "react-redux";
+import Head from "next/head";
+import { IUIConfig } from "src/interfaces/";
+import Messenger from "@components/messages/Messenger";
+import { resetMessageState } from "@redux/message/actions";
 
 interface IProps {
   ui: IUIConfig;
@@ -17,7 +17,7 @@ class Messages extends PureComponent<IProps> {
 
   static getInitialProps({ ctx }) {
     return {
-      query: ctx.query
+      query: ctx.query,
     };
   }
 
@@ -31,24 +31,29 @@ class Messages extends PureComponent<IProps> {
     return (
       <>
         <Head>
-          <title>
-            {ui && ui.siteName}
-            {' '}
-            | Messages
-          </title>
+          <title>{ui && ui.siteName} | Messages</title>
         </Head>
-        <Layout>
-          <div className="main-container">
+        <div
+          style={{
+            background: "#16182305",
+            marginTop: "-80px",
+            height: "100vh",
+          }}
+        >
+          <div
+            className="main-container"
+            style={{ position: "relative", top: "50px" }}
+          >
             <Messenger toSource={query.toSource} toId={query.toId} />
           </div>
-        </Layout>
+        </div>
       </>
     );
   }
 }
 
 const mapStates = (state: any) => ({
-  ui: { ...state.ui }
+  ui: { ...state.ui },
 });
 
 const mapDispatch = { resetMessageState };

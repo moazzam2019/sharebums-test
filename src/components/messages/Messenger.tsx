@@ -1,10 +1,12 @@
-import { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { deactiveConversation } from '@redux/message/actions';
-import { IConversation } from 'src/interfaces/message';
-import ConversationList from './ConversationList';
-import MessageList from './MessageList';
-import './Messenger.less';
+import { PureComponent } from "react";
+import { connect } from "react-redux";
+import { deactiveConversation } from "@redux/message/actions";
+import { IConversation } from "src/interfaces/message";
+import ConversationList from "./ConversationList";
+import MessageList from "./MessageList";
+import "./Messenger.less";
+import Link from "next/dist/client/link";
+import { LeftArrowIcon } from "src/icons";
 
 interface IProps {
   toSource?: string;
@@ -24,10 +26,19 @@ class Messenger extends PureComponent<IProps> {
     const { toSource, toId, activeConversation } = this.props;
     return (
       <div className="messenger">
-        <div className={!activeConversation._id ? 'sidebar' : 'sidebar active'}>
+        <Link href="/home">
+          <div className="left-arrow-icon">
+            <LeftArrowIcon />
+          </div>
+        </Link>
+        <div className={!activeConversation._id ? "sidebar" : "sidebar active"}>
           <ConversationList toSource={toSource} toId={toId} />
         </div>
-        <div className={!activeConversation._id ? 'chat-content' : 'chat-content active'}>
+        <div
+          className={
+            !activeConversation._id ? "chat-content" : "chat-content active"
+          }
+        >
           <MessageList />
         </div>
       </div>
@@ -37,7 +48,7 @@ class Messenger extends PureComponent<IProps> {
 const mapStates = (state: any) => {
   const { activeConversation } = state.conversation;
   return {
-    activeConversation
+    activeConversation,
   };
 };
 

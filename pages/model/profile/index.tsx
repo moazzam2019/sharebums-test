@@ -481,7 +481,6 @@ class PerformerProfile extends PureComponent<IProps> {
       countries,
     } = this.props;
 
-    console.log(performer);
     if (error) {
       return (
         <Error

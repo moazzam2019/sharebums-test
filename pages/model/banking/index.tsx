@@ -132,7 +132,6 @@ class BankingSettings extends PureComponent<IProps> {
     const { ui, user, settings, countries } = this.props;
     const { loading, submiting, loginUrl, stripeAccount, bankingTab } =
       this.state;
-    console.log(this.props);
     return (
       <Layout>
         <Head>

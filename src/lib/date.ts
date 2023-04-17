@@ -1,6 +1,13 @@
-import moment from 'moment';
+import moment from "moment";
 
-export function formatDate(date: Date, format = 'DD/MM/YYYY HH:mm:ss') {
+export function formatDate(date: Date, format = "DD MMMM YYYY HH:mm") {
+  return moment(date).format(format);
+}
+export function formatDateTwo(date: Date, format = "HH:mm") {
+  return moment(date).format(format);
+}
+
+export function formatDateNew(date: Date, format = "YYYY/MM/DD") {
   return moment(date).format(format);
 }
 
@@ -9,7 +16,10 @@ export function formatDateFromnow(date: Date) {
 }
 
 export function dobToAge(date: Date) {
-  return moment().diff(moment(date), 'years') > 0 && `${moment().diff(moment(date), 'years')}+`;
+  return (
+    moment().diff(moment(date), "years") > 0 &&
+    `${moment().diff(moment(date), "years")}+`
+  );
 }
 
 export function nowIsBefore(date: Date) {

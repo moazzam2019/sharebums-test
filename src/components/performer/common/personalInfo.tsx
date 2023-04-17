@@ -94,7 +94,6 @@ const PersonalInfo: React.FC<Props> = (props) => {
     onVerifyEmail,
     countTime = 60,
   } = props;
-  console.log(props);
   return (
     <>
       <Form

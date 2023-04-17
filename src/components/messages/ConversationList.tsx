@@ -1,17 +1,21 @@
-import { PureComponent } from 'react';
-import { Spin } from 'antd';
-import { connect } from 'react-redux';
-import { MessageIcon } from 'src/icons';
+import { PureComponent } from "react";
+import { Spin } from "antd";
+import { connect } from "react-redux";
+import { MessageIcon } from "src/icons";
 import {
-  searchConversations, getConversations, setActiveConversation,
-  getConversationDetail, receiveMessageSuccess, deactiveConversation
-} from '@redux/message/actions';
-import { Event } from 'src/socket';
-import { debounce } from 'lodash';
-import { IUser } from 'src/interfaces';
-import ConversationSearch from './ConversationSearch';
-import ConversationListItem from './ConversationListItem';
-import './ConversationList.less';
+  searchConversations,
+  getConversations,
+  setActiveConversation,
+  getConversationDetail,
+  receiveMessageSuccess,
+  deactiveConversation,
+} from "@redux/message/actions";
+import { Event } from "src/socket";
+import { debounce } from "lodash";
+import { IUser } from "src/interfaces";
+import ConversationSearch from "./ConversationSearch";
+import ConversationListItem from "./ConversationListItem";
+import "./ConversationList.less";
 
 interface IProps {
   searchConversations: Function;
@@ -42,8 +46,8 @@ interface IProps {
 class ConversationList extends PureComponent<IProps> {
   state = {
     conversationPage: 0,
-    keyword: ''
-  }
+    keyword: "",
+  };
 
   componentDidMount() {
     const {
@@ -51,36 +55,39 @@ class ConversationList extends PureComponent<IProps> {
       setActiveConversation: setActiveConversationHandler,
       toSource,
       toId,
-      user
+      user,
     } = this.props;
     const { conversationPage, keyword } = this.state;
     getConversationsHandler({
-      limit: 25, offset: conversationPage * 25, type: 'private', keyword
+      limit: 25,
+      offset: conversationPage * 25,
+      type: "private",
+      keyword,
     });
     if (toSource && toId) {
       setTimeout(() => {
         setActiveConversationHandler({
           source: toSource,
           sourceId: toId,
-          recipientId: user._id
+          recipientId: user._id,
         });
       }, 1000);
     }
   }
 
-  onMessage = (message: { conversationId: string | number; }) => {
+  onMessage = (message: { conversationId: string | number }) => {
     if (!message) {
       return;
     }
     const {
       conversation,
       getConversationDetail: getConversationDetailHandler,
-      receiveMessageSuccess: receiveMessageSuccessHandler
+      receiveMessageSuccess: receiveMessageSuccessHandler,
     } = this.props;
     const { mapping } = conversation;
     if (!mapping[message.conversationId]) {
       getConversationDetailHandler({
-        id: message.conversationId
+        id: message.conversationId,
       });
     }
     receiveMessageSuccessHandler(message);
@@ -92,33 +99,47 @@ class ConversationList extends PureComponent<IProps> {
     this.setState({ keyword: value, conversationPage: 0 });
     if (value) {
       return getConversationsHandler({
-        keyword: value, limit: 25, offset: 0, type: 'private'
+        keyword: value,
+        limit: 25,
+        offset: 0,
+        type: "private",
       });
     }
-    return getConversationsHandler({ limit: 25, offset: 0, type: 'private' });
+    return getConversationsHandler({ limit: 25, offset: 0, type: "private" });
   }, 500);
 
-  handleScroll = async (event: { target: any; }) => {
-    const { conversation, getConversations: getConversationsHandler } = this.props;
+  handleScroll = async (event: { target: any }) => {
+    const { conversation, getConversations: getConversationsHandler } =
+      this.props;
     const { requesting, data, total } = conversation.list;
     const { conversationPage, keyword } = this.state;
     const canloadmore = total > data.length;
     const ele = event.target;
     if (!canloadmore) return;
-    if ((ele.offsetHeight + ele.scrollTop >= ele.scrollHeight - 10) && !requesting && canloadmore) {
+    if (
+      ele.offsetHeight + ele.scrollTop >= ele.scrollHeight - 10 &&
+      !requesting &&
+      canloadmore
+    ) {
       this.setState({ conversationPage: conversationPage + 1 });
       getConversationsHandler({
-        keyword, limit: 25, offset: conversationPage + 1, type: 'private'
+        keyword,
+        limit: 25,
+        offset: conversationPage + 1,
+        type: "private",
       });
     }
-  }
+  };
 
   setActive = (conversationId: any) => {
     const {
-      setActiveConversation: setActive, deactiveConversation: setDeactive, conversation
+      setActiveConversation: setActive,
+      deactiveConversation: setDeactive,
+      conversation,
     } = this.props;
     setActive({ conversationId });
-    conversation?.activeConversation?._id && setDeactive(conversation?.activeConversation?._id);
+    conversation?.activeConversation?._id &&
+      setDeactive(conversation?.activeConversation?._id);
   };
 
   render() {
@@ -129,31 +150,34 @@ class ConversationList extends PureComponent<IProps> {
       <div className="conversation-list">
         <Event event="message_created" handler={this.onMessage} />
         <div className="user-bl">
-          <MessageIcon />
-          {' '}
-          Chats
+          <MessageIcon /> Messages{" "}
         </div>
-        <ConversationSearch
+        {/* <ConversationSearch
           onSearch={(e) => {
             e.persist();
             this.onSearchConversation(e);
           }}
-        />
-        <div className="c-list-container" onScroll={this.handleScroll.bind(this)}>
-          {conversations.length > 0
-          && conversations.map((conversationId) => (
-            <ConversationListItem
-              key={conversationId}
-              data={mapping[conversationId]}
-              setActive={this.setActive}
-              selected={activeConversation._id === conversationId}
-            />
-          ))}
+        /> */}
+        <div
+          className="c-list-container"
+          onScroll={this.handleScroll.bind(this)}
+        >
+          {conversations.length > 0 &&
+            conversations.map((conversationId) => (
+              <ConversationListItem
+                key={conversationId}
+                data={mapping[conversationId]}
+                setActive={this.setActive}
+                selected={activeConversation._id === conversationId}
+              />
+            ))}
           {requesting && (
-          <div className="text-center" style={{ margin: 30 }}><Spin /></div>
+            <div className="text-center" style={{ margin: 30 }}>
+              <Spin />
+            </div>
           )}
           {!requesting && !conversations.length && (
-          <p className="text-center">No conversation found.</p>
+            <p className="text-center">No conversation found.</p>
           )}
         </div>
       </div>
@@ -164,7 +188,7 @@ class ConversationList extends PureComponent<IProps> {
 const mapStates = (state: any) => ({
   conversation: { ...state.conversation },
   message: { ...state.message },
-  user: { ...state.user.current }
+  user: { ...state.user.current },
 });
 
 const mapDispatch = {
@@ -173,6 +197,6 @@ const mapDispatch = {
   setActiveConversation,
   deactiveConversation,
   getConversationDetail,
-  receiveMessageSuccess
+  receiveMessageSuccess,
 };
 export default connect(mapStates, mapDispatch)(ConversationList);

@@ -56,9 +56,6 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
     getPerformers();
   }, [isFreeSubscription, user]);
 
-  console.log(randomPerformers);
-  console.log(user);
-
   return (
     <div>
       {" "}

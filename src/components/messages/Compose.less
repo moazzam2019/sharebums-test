@@ -7,8 +7,25 @@
   width: calc(100% + 2px);
   bottom: -1px;
   left: -1px;
-  border: 1px solid @light-card;
+  border-top: 1px solid @light-card;
   background-color: @white;
+  justify-content: space-between;
+  padding: 10px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+
+  .compose-left {
+    width: 93%;
+    display: flex;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    align-items: center;
+    background-color: #16182305;
+    color: black;
+  }
+  .compose-right {
+    margin-right: -12px;
+  }
 
   .toolbar-button {
     color: @grey-color;
@@ -84,8 +101,9 @@
 
   .grp-send {
     height: 48px;
-    background: @theme-color;
-    padding: 12px 15px;
+    padding: 20px 0px;
+    padding-right: 15px;
+    transform: rotate(50deg);
 
     .anticon {
       font-size: 18px;
@@ -94,7 +112,6 @@
     }
 
     &:hover {
-      background: @primary-color;
     }
   }
 

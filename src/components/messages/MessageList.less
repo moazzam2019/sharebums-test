@@ -1,4 +1,4 @@
-@import '../../../style/vars.less';
+@import "../../../style/vars.less";
 
 .message-list {
   height: 100%;
@@ -15,12 +15,15 @@
 
     .recipient {
       text-transform: capitalize;
-      color: @grey-color;
+      color: #161823;
+      font-family: "Inter";
+      font-weight: bold;
       cursor: pointer;
+      padding: 15px 10px;
 
       .ant-avatar {
-        width: 30px;
-        height: 30px;
+        width: 47px;
+        height: 47px;
         margin-right: 5px;
       }
 
@@ -44,7 +47,7 @@
     padding: 0 10px;
     padding-bottom: 50px;
     overflow-y: auto;
-    max-height: calc(100% - 50px);
+    max-height: calc(100% - 110px);
 
     .sub-text {
       text-align: center;
@@ -58,5 +61,4 @@
       }
     }
   }
-
 }
