@@ -12,15 +12,18 @@ import "./sidebar.less";
 import { performerService } from "@services/performer.service";
 import Router, { withRouter, Router as RouterEvent } from "next/router";
 import { useState, useEffect } from "react";
+import { IUser } from "@interfaces/user";
+import { IPerformer } from "@interfaces/performer";
 
 interface SidebarProps {
   router: any;
+  user?: IUser | IPerformer;
 }
 
 const Sidebar: React.FC<SidebarProps> = (props) => {
   const { router, user } = props;
   const [loadingPerformer, setLoadingPerformer] = useState<boolean>(false);
-  const [randomPerformers, setRandomPerformers] = useState<User[]>([]);
+  const [randomPerformers, setRandomPerformers] = useState([]);
   const [isFreeSubscription, setIsFreeSubscription] = useState<boolean>(false);
   const [showAll, setShowAll] = useState<boolean>(false);
   const [showAllFollowed, setShowAllFollowed] = useState<boolean>(false);

@@ -5,10 +5,11 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getVideos, moreVideo } from "@redux/video/actions";
 import { getFeeds, moreFeeds, removeFeedSuccess } from "@redux/feed/actions";
-import { listProducts, moreProduct } from "@redux/product/actions";
 import { moreGalleries, getGalleries } from "@redux/gallery/actions";
 import { updateBalance } from "@redux/user/actions";
 import Sidebar from "@components/common/layout/sidebar";
+import { listProducts, moreProduct } from "@redux/product/actions";
+
 import {
   performerService,
   tokenTransctionService,
@@ -55,9 +56,9 @@ import { shortenLargeNumber } from "@lib/index";
 import Link from "next/link";
 import Router from "next/router";
 import Error from "next/error";
+import "./index.less";
 import "@components/performer/performer.less";
 import moment from "moment";
-import "./index.less";
 
 interface IProps {
   ui: IUIConfig;

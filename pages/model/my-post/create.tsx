@@ -77,7 +77,6 @@ class CreatePost extends PureComponent<IProps> {
               style={{
                 fontFamily: "Inter",
                 fontSize: "18px",
-                fontWeight: "600",
                 lineHeight: "24px",
                 letterSpacing: "0.02em",
               }}
@@ -88,7 +87,6 @@ class CreatePost extends PureComponent<IProps> {
               style={{
                 fontFamily: "Inter",
                 fontSize: "14px",
-                fontWeight: "500",
                 lineHeight: "24px",
                 letterSpacing: "0.02em",
                 marginTop: "10px",

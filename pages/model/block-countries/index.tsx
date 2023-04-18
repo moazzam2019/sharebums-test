@@ -16,7 +16,7 @@ import PageHeading from "@components/common/page-heading";
 import "../../user/index.less";
 
 interface IProps {
-  performer: IPerformer;
+  currentUser?: IPerformer;
   ui: IUIConfig;
   countries: ICountry[];
   updateUserSuccess: Function;

@@ -365,8 +365,8 @@ class AccountSettings extends PureComponent<IProps> {
                     Set up preferred account where you would like your payouts
                     to be deposited to:
                   </div>
-
-                  <BankingSettings countries={countries} user={currentUser} />
+                  {/* // @ts-ignore */}
+                  <BankingSettings countries={countries} />
                 </>
               )}
               {menuItem === "blockcountries" && (

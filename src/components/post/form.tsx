@@ -716,14 +716,6 @@ export default class FeedForm extends PureComponent<IProps> {
                     this.setState({ intendedFor: option });
                   }}
                   optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? "")
-                      .toLowerCase()
-                      .localeCompare((optionB?.label ?? "").toLowerCase())
-                  }
                   options={[
                     {
                       value: "follower",

@@ -4,6 +4,7 @@ import { LoadingOutlined, CameraOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { getGlobalConfig } from "@services/config";
 import { TickSvgNew } from "src/icons";
+import { IPerformer } from "@interfaces/performer";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -37,6 +38,7 @@ interface IProps {
   uploadUrl?: string;
   headers?: any;
   onUploaded?: Function;
+  user?: IPerformer;
 }
 
 export class AvatarUpload extends PureComponent<IProps, IState> {

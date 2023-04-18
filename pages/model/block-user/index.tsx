@@ -12,7 +12,7 @@ import "./index.less";
 
 interface IProps {
   ui: IUIConfig;
-  className: string;
+  className?: string;
 }
 
 class BlockPage extends PureComponent<IProps> {
@@ -129,9 +129,8 @@ class BlockPage extends PureComponent<IProps> {
           <Form
             name="blockForm"
             onFinish={() => {
-              this.handleBlockUser();
-              this.setState({ blockUserId: "" }); // clear the selected value after submitting the form
-              // location.reload();
+              this.handleBlockUser(this.state.blockUserId);
+              this.setState({ blockUserId: "" });
             }}
             initialValues={{ reason: "" }}
             labelCol={{ span: 24 }}

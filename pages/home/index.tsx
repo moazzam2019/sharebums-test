@@ -34,9 +34,10 @@ import Link from "next/link";
 import Router, { withRouter, Router as RouterEvent } from "next/router";
 import { debounce } from "lodash";
 import dynamic from "next/dynamic";
+import Sidebar from "@components/common/layout/sidebar";
+
 import "./index.less";
 import { HomeIcon, ModelIcon, TickIcon } from "src/icons";
-import Sidebar from "@components/common/layout/sidebar";
 
 const StreamListItem = dynamic(
   () => import("@components/streaming/stream-list-item"),

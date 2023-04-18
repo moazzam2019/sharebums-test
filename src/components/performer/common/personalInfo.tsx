@@ -47,29 +47,29 @@ const PersonalInfo: React.FC<Props> = (props) => {
   const [states, setStates] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
-  const handleGetStates = async (countryCode: string) => {
-    const { user } = props;
-    const resp = await utilsService.statesList(countryCode);
-    setStates(resp.data);
-    const eState = resp.data.find((s) => s === user?.state);
-    if (eState) {
-      formRef.setFieldsValue({ state: eState });
-    } else {
-      formRef.setFieldsValue({ state: "", city: "" });
-    }
-  };
+  // const handleGetStates = async (countryCode: string) => {
+  //   const { user } = props;
+  //   const resp = await utilsService.statesList(countryCode);
+  //   setStates(resp.data);
+  //   const eState = resp.data.find((s) => s === user?.state);
+  //   if (eState) {
+  //     formRef.setFieldsValue({ state: eState });
+  //   } else {
+  //     formRef.setFieldsValue({ state: "", city: "" });
+  //   }
+  // };
 
-  const handleGetCities = async (state: string, countryCode: string) => {
-    const { user } = props;
-    const resp = await utilsService.citiesList(countryCode, state);
-    setCities(resp.data);
-    const eCity = resp.data.find((s) => s === user?.city);
-    if (eCity) {
-      formRef.setFieldsValue({ city: eCity });
-    } else {
-      formRef.setFieldsValue({ city: "" });
-    }
-  };
+  // const handleGetCities = async (state: string, countryCode: string) => {
+  //   const { user } = props;
+  //   const resp = await utilsService.citiesList(countryCode, state);
+  //   setCities(resp.data);
+  //   const eCity = resp.data.find((s) => s === user?.city);
+  //   if (eCity) {
+  //     formRef.setFieldsValue({ city: eCity });
+  //   } else {
+  //     formRef.setFieldsValue({ city: "" });
+  //   }
+  // };
   const layout = {
     labelCol: { span: 24 },
     wrapperCol: { span: 24 },
@@ -185,9 +185,10 @@ const PersonalInfo: React.FC<Props> = (props) => {
               <Select
                 showSearch
                 optionFilterProp="label"
-                onChange={(val: string) => handleGetStates(val)}
+                // onChange={(val: string) => handleGetStates(val)}
               >
                 {countries.map((c) => (
+                  // @ts-ignore
                   <Option value={c.code} label={c.name} key={c.code}>
                     <img alt="country_flag" src={c.flag} width="25px" />{" "}
                     {c.name}

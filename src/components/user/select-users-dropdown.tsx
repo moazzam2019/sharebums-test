@@ -1,7 +1,7 @@
-import { PureComponent } from 'react';
-import { Select, message, Avatar } from 'antd';
-import { debounce } from 'lodash';
-import { userService } from '@services/user.service';
+import { PureComponent } from "react";
+import { Select, message, Avatar } from "antd";
+import { debounce } from "lodash";
+import { userService } from "@services/user.service";
 
 interface IProps {
   placeholder?: string;
@@ -9,12 +9,13 @@ interface IProps {
   onSelect: Function;
   defaultValue?: string;
   disabled?: boolean;
+  value?: string;
 }
 
 export class SelectUserDropdown extends PureComponent<IProps> {
   state = {
     loading: false,
-    data: [] as any
+    data: [] as any,
   };
 
   loadUsers = debounce(async (q) => {
@@ -23,23 +24,21 @@ export class SelectUserDropdown extends PureComponent<IProps> {
       const resp = await (await userService.search({ q, limit: 99 })).data;
       this.setState({
         data: resp.data,
-        loading: false
+        loading: false,
       });
     } catch (e) {
       const err = await e;
-      message.error(err?.message || 'Error occured');
+      message.error(err?.message || "Error occured");
       this.setState({ loading: false });
     }
   }, 500);
 
   componentDidMount() {
-    this.loadUsers('');
+    this.loadUsers("");
   }
 
   render() {
-    const {
-      style, onSelect, defaultValue, disabled
-    } = this.props;
+    const { style, onSelect, defaultValue, disabled } = this.props;
     const { data, loading } = this.state;
     return (
       <Select
@@ -53,13 +52,18 @@ export class SelectUserDropdown extends PureComponent<IProps> {
         optionFilterProp="children"
         disabled={disabled}
       >
-        {data && data.length > 0 && data.map((u) => (
-          <Select.Option value={u._id} key={u._id} style={{ textTransform: 'capitalize' }}>
-            <Avatar src={u?.avatar || '/static/no-avatar.png'} size={28} />
-            {' '}
-            {`${u?.name || u?.username || 'N/A'}`}
-          </Select.Option>
-        ))}
+        {data &&
+          data.length > 0 &&
+          data.map((u) => (
+            <Select.Option
+              value={u._id}
+              key={u._id}
+              style={{ textTransform: "capitalize" }}
+            >
+              <Avatar src={u?.avatar || "/static/no-avatar.png"} size={28} />{" "}
+              {`${u?.name || u?.username || "N/A"}`}
+            </Select.Option>
+          ))}
       </Select>
     );
   }
